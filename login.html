@@ -61,9 +61,11 @@
       font-size: 1em;
       background: var(--light-grey);
       font-family: inherit;
+      box-sizing: border-box;
     }
     input[type="email"]:focus, input[type="password"]:focus {
       outline: none; border-color: var(--primary-green);
+      box-shadow: 0 0 0 3px rgba(76, 175, 79, 0.1);
     }
     .login-btn {
       width:100%; background:var(--primary-green);
@@ -135,73 +137,102 @@
       </div>
     </form>
   </div>
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+  <!-- Load Supabase FIRST with async to ensure it loads before our code -->
+  <script async src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  
   <script>
-    // Config
-    const supabaseUrl = "https://prkvtxqhuvfbekapeltm.supabase.co";
-    const supabaseKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBya3Z0eHFodXZmYmVrYXBlbHRtIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzcyMDYzMzQsImV4cCI6MjA5Mjc4MjMzNH0.C5e7kPILz52eIQCuwwcg6cNLhA-hqyqRVmit5HR-0J0";
-    var supabase = window.__supabaseInstance;
-    if (!supabase) {
-    supabase = window.supabase.createClient(supabaseUrl, supabaseKey);
-    window.__supabaseInstance = supabase;
-    }
-    // Loader
-    const loader = document.getElementById("loader-overlay");
-    function showLoader() { loader.style.display = "flex"; }
-    function hideLoader() { loader.style.display = "none"; }
-
-    // Handle Login Submit
-    const form = document.getElementById('loginForm');
-    form.addEventListener('submit', async function(e){
-      e.preventDefault();
-      document.getElementById("form-error-msg").textContent = '';
-      document.getElementById("form-success-msg").textContent = '';
-      const btn = document.getElementById("login-btn");
-      btn.disabled = true;
-      showLoader();
-
-      const email = document.getElementById("login-email").value.trim();
-      const password = document.getElementById("login-password").value;
-
-      // Quick client-side validation
-      if(!email || !password){
-        document.getElementById("form-error-msg").textContent = "Please enter email and password.";
-        btn.disabled = false; hideLoader(); return;
+    // Wait for Supabase to load, then initialize
+    function initializeSupabase() {
+      if (!window.supabase) {
+        console.error('Supabase library failed to load');
+        setTimeout(initializeSupabase, 100); // Retry
+        return;
       }
 
-      try {
-        // 1. Sign in with Supabase Auth
-        const { data, error } = await supabase.auth.signInWithPassword({ email, password });
-        if(error) throw error;
+      // Config
+      const supabaseUrl = "https://prkvtxqhuvfbekapeltm.supabase.co";
+      const supabaseKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBya3Z0eHFodXZmYmVrYXBlbHRtIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzcyMDYzMzQsImV4cCI6MjA5Mjc4MjMzNH0.C5e7kPILz52eIQCuwwcg6cNLhA-hqyqRVmit5HR-0J0";
+      
+      // Create Supabase client
+      const supabaseClient = window.supabase.createClient(supabaseUrl, supabaseKey);
 
-        // 2. Fetch user profile (from users table)
-        let userId = data.user.id;
-        let { data: profile, error:profileErr } = await supabase
-          .from("users")
-          .select("*")
-          .eq("user_id", userId)
-          .single();
+      // Loader
+      const loader = document.getElementById("loader-overlay");
+      function showLoader() { loader.style.display = "flex"; }
+      function hideLoader() { loader.style.display = "none"; }
 
-        // Fall back: lookup by email (if user_id is missing in users table)
-        if (!profile || profileErr) {
-          let altProfile = await supabase.from("users").select("*").eq("email", email).maybeSingle();
-          profile = altProfile.data || {};
+      // Handle Login Submit
+      const form = document.getElementById('loginForm');
+      form.addEventListener('submit', async function(e){
+        e.preventDefault();
+        document.getElementById("form-error-msg").textContent = '';
+        document.getElementById("form-success-msg").textContent = '';
+        const btn = document.getElementById("login-btn");
+        btn.disabled = true;
+        showLoader();
+
+        const email = document.getElementById("login-email").value.trim();
+        const password = document.getElementById("login-password").value;
+
+        // Quick client-side validation
+        if(!email || !password){
+          document.getElementById("form-error-msg").textContent = "Please enter email and password.";
+          btn.disabled = false; 
+          hideLoader(); 
+          return;
         }
 
-        // 3. Save to localStorage for later use
-        localStorage.setItem('ogonijobhub_profile', JSON.stringify(profile || { email }));
+        try {
+          // 1. Sign in with Supabase Auth
+          const { data, error } = await supabaseClient.auth.signInWithPassword({ email, password });
+          if(error) throw error;
 
-        hideLoader();
-        document.getElementById("form-success-msg").textContent = "Login successful! Redirecting...";
-        window.location = "dashboard.html";
+          // 2. Fetch user profile (from users table)
+          let userId = data.user.id;
+          let { data: profile, error:profileErr } = await supabaseClient
+            .from("users")
+            .select("*")
+            .eq("user_id", userId)
+            .single();
 
-      } catch (err) {
-        hideLoader();
-        btn.disabled = false;
-        document.getElementById("form-error-msg").textContent =
-          err.message || err.error_description || "Login failed. Try again.";
-      }
-    });
+          // Fall back: lookup by email (if user_id is missing in users table)
+          if (!profile || profileErr) {
+            let { data: altProfile } = await supabaseClient
+              .from("users")
+              .select("*")
+              .eq("email", email)
+              .maybeSingle();
+            profile = altProfile || {};
+          }
+
+          // 3. Save to localStorage for later use
+          localStorage.setItem('ogonijobhub_profile', JSON.stringify(profile || { email }));
+
+          hideLoader();
+          document.getElementById("form-success-msg").textContent = "Login successful! Redirecting...";
+          
+          // Redirect after a short delay to show success message
+          setTimeout(() => {
+            window.location = "dashboard.html";
+          }, 800);
+
+        } catch (err) {
+          hideLoader();
+          btn.disabled = false;
+          console.error('Login error:', err);
+          document.getElementById("form-error-msg").textContent =
+            err.message || err.error_description || "Login failed. Try again.";
+        }
+      });
+    }
+
+    // Initialize when page loads
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', initializeSupabase);
+    } else {
+      initializeSupabase();
+    }
   </script>
 </body>
 </html>
