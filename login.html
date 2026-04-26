@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Login | OGONI JOB HUB</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@500;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary-green: #4CAF4F;
+      --dark-grey: #4D4D4D;
+      --light-grey: #F5F7FA;
+      --silver: #ABBED1;
+    }
+    body {
+      margin: 0; background: var(--light-grey);
+      font-family: 'Inter', Arial, sans-serif;
+      min-height: 100vh;
+    }
+    .container {
+      max-width: 420px;
+      margin: 0 auto;
+      padding-top: 48px;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: stretch;
+    }
+    .login-card {
+      background: #fff;
+      border-radius: 12px;
+      box-shadow: 0 4px 22px rgba(0,0,0,0.06);
+      padding: 36px 25px 25px 25px;
+      margin-bottom: 30px;
+    }
+    .header-logo {
+      text-align:center;
+      margin-bottom:18px;
+      color: var(--primary-green);
+      font-weight: bold;
+      font-size: 1.6em;
+      letter-spacing: 1px;
+      display:block;
+      text-decoration:none;
+    }
+    .input-group {
+      margin-bottom: 24px;
+    }
+    label {
+      font-size: 0.92em;
+      font-weight: 600;
+      margin-bottom: 6px;
+      color: var(--dark-grey);
+      display: block;
+    }
+    input[type="email"], input[type="password"] {
+      width: 100%;
+      border: 1px solid var(--silver);
+      border-radius: 6px;
+      padding: 13px;
+      font-size: 1em;
+      background: var(--light-grey);
+      font-family: inherit;
+    }
+    input[type="email"]:focus, input[type="password"]:focus {
+      outline: none; border-color: var(--primary-green);
+    }
+    .login-btn {
+      width:100%; background:var(--primary-green);
+      border:none; border-radius:6px;
+      color:#fff; font-size:1.11em; font-weight:600;
+      padding:14px 0; cursor:pointer; margin-top:3px;
+      transition: background .18s;
+    }
+    .login-btn:disabled { background:#8ee395; cursor:not-allowed; }
+    .login-btn:hover:not(:disabled) { background:#388E3C; }
+    .forgot-link {
+      display:block; text-align:right;
+      font-size:.94em; color:var(--primary-green);
+      text-decoration:none; margin-bottom:8px;
+    }
+    .form-error {
+      min-height:22px;
+      margin: 20px 0 5px 0;
+      color:#C91515;
+      text-align:center; font-size:.98em;
+    }
+    .form-success {
+      color: var(--primary-green); text-align:center;
+      margin: 13px 0 8px 0;
+    }
+    .other-link {
+      margin-top:14px;
+      text-align:center;
+    }
+    .other-link a {
+      color:var(--primary-green); text-decoration:none;
+      font-weight:500;
+    }
+    #loader-overlay {
+      position:fixed; top:0; left:0; right:0; bottom:0;
+      background:rgba(0,0,0,0.18); display:none; align-items:center; justify-content:center; z-index: 9001;
+    }
+    .loader {
+      border: 5px solid #f3f3f3; border-top: 5px solid var(--primary-green);
+      border-radius: 50%; width: 38px; height: 38px; animation: spin 1s linear infinite;
+    }
+    @keyframes spin { 100% { transform: rotate(360deg); } }
+    @media (max-width:600px) {
+      .container { padding:18px 3vw 0 3vw;}
+      .login-card {padding:22px 7vw;}
+    }
+  </style>
+</head>
+<body>
+  <div id="loader-overlay"><div class="loader"></div></div>
+  <div class="container">
+    <a href="index.html" class="header-logo">OGONI JOB HUB</a>
+    <form class="login-card" id="loginForm" autocomplete="off" novalidate>
+      <div class="step-title" style="font-size:1.35em; font-weight:700; margin-bottom:20px;">Login to your account</div>
+      <div class="input-group">
+        <label for="email">Email</label>
+        <input type="email" name="email" id="login-email" placeholder="Enter your email" autocomplete="username" required>
+      </div>
+      <div class="input-group">
+        <label for="password">Password</label>
+        <input type="password" name="password" id="login-password" placeholder="Enter your password" autocomplete="current-password" required>
+      </div>
+      <a href="#" class="forgot-link" style="display:none;">Forgot password?</a>
+      <button type="submit" class="login-btn" id="login-btn">Login</button>
+      <div class="form-error" id="form-error-msg"></div>
+      <div class="form-success" id="form-success-msg"></div>
+      <div class="other-link">
+        Don't have an account? <a href="create.html">Register</a>
+      </div>
+    </form>
+  </div>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script>
+    // Config
+    const supabaseUrl = "https://prkvtxqhuvfbekapeltm.supabase.co";
+    const supabaseKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBya3Z0eHFodXZmYmVrYXBlbHRtIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzcyMDYzMzQsImV4cCI6MjA5Mjc4MjMzNH0.C5e7kPILz52eIQCuwwcg6cNLhA-hqyqRVmit5HR-0J0";
+    var supabase = window.__supabaseInstance;
+    if (!supabase) {
+    supabase = window.supabase.createClient(supabaseUrl, supabaseKey);
+    window.__supabaseInstance = supabase;
+    }
+    // Loader
+    const loader = document.getElementById("loader-overlay");
+    function showLoader() { loader.style.display = "flex"; }
+    function hideLoader() { loader.style.display = "none"; }
+
+    // Handle Login Submit
+    const form = document.getElementById('loginForm');
+    form.addEventListener('submit', async function(e){
+      e.preventDefault();
+      document.getElementById("form-error-msg").textContent = '';
+      document.getElementById("form-success-msg").textContent = '';
+      const btn = document.getElementById("login-btn");
+      btn.disabled = true;
+      showLoader();
+
+      const email = document.getElementById("login-email").value.trim();
+      const password = document.getElementById("login-password").value;
+
+      // Quick client-side validation
+      if(!email || !password){
+        document.getElementById("form-error-msg").textContent = "Please enter email and password.";
+        btn.disabled = false; hideLoader(); return;
+      }
+
+      try {
+        // 1. Sign in with Supabase Auth
+        const { data, error } = await supabase.auth.signInWithPassword({ email, password });
+        if(error) throw error;
+
+        // 2. Fetch user profile (from users table)
+        let userId = data.user.id;
+        let { data: profile, error:profileErr } = await supabase
+          .from("users")
+          .select("*")
+          .eq("user_id", userId)
+          .single();
+
+        // Fall back: lookup by email (if user_id is missing in users table)
+        if (!profile || profileErr) {
+          let altProfile = await supabase.from("users").select("*").eq("email", email).maybeSingle();
+          profile = altProfile.data || {};
+        }
+
+        // 3. Save to localStorage for later use
+        localStorage.setItem('ogonijobhub_profile', JSON.stringify(profile || { email }));
+
+        hideLoader();
+        document.getElementById("form-success-msg").textContent = "Login successful! Redirecting...";
+        window.location = "dashboard.html";
+
+      } catch (err) {
+        hideLoader();
+        btn.disabled = false;
+        document.getElementById("form-error-msg").textContent =
+          err.message || err.error_description || "Login failed. Try again.";
+      }
+    });
+  </script>
+</body>
+</html>

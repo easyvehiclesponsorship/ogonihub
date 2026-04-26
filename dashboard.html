@@ -1,0 +1,835 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Dashboard | OGONI JOB HUB</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary-green: #4CAF4F;
+      --dark-grey: #333;
+      --light-grey: #f8f9fb;
+      --silver: #ABBED1;
+      --border-color: #e0e0e0;
+      --text-light: #666;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Inter', Arial, sans-serif;
+      background: var(--light-grey);
+      margin: 0;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    header {
+      background: linear-gradient(135deg, var(--primary-green), #45a049);
+      padding: 16px 6vw;
+      box-shadow: 0 4px 12px #00000015;
+      font-size: 1.3rem;
+      font-weight: 700;
+      color: white;
+      letter-spacing: 1px;
+      text-align: left;
+    }
+
+    .main-content {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: stretch;
+      padding: 24px 4vw 70px 4vw;
+      min-height: 300px;
+      max-width: 750px;
+      margin: 0 auto;
+      width: 100%;
+    }
+
+    .tab-view { display: none; animation: fadein .18s; }
+    .tab-view.active { display: block; }
+
+    @keyframes fadein { from { opacity:0; } to { opacity:1; } }
+
+    h2 {
+      color: var(--dark-grey);
+      margin: 0 0 20px 0;
+      font-size: 1.6em;
+    }
+
+    /* ===== PROFILE TAB STYLES ===== */
+    .profile-header {
+      text-align: center;
+      margin-bottom: 30px;
+      padding: 30px;
+      background: white;
+      border-radius: 10px;
+      box-shadow: 0 2px 8px #00000008;
+    }
+
+    .profile-avatar {
+      width: 100px;
+      height: 100px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--primary-green), #45a049);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 15px;
+      font-size: 3em;
+      color: white;
+      box-shadow: 0 4px 12px rgba(76, 175, 79, 0.3);
+    }
+
+    .profile-name {
+      font-size: 1.5em;
+      font-weight: 700;
+      color: var(--dark-grey);
+      margin: 10px 0 5px 0;
+    }
+
+    .profile-email {
+      color: var(--text-light);
+      font-size: 0.95em;
+      margin-bottom: 3px;
+    }
+
+    .profile-field {
+      color: var(--primary-green);
+      font-weight: 600;
+      font-size: 0.95em;
+    }
+
+    .profile-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 20px;
+      margin-bottom: 25px;
+    }
+
+    .profile-card {
+      background: white;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 2px 8px #00000008;
+      border-left: 4px solid var(--primary-green);
+    }
+
+    .profile-card-title {
+      font-size: 0.85em;
+      color: var(--text-light);
+      text-transform: uppercase;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+      margin-bottom: 8px;
+    }
+
+    .profile-card-value {
+      font-size: 1.05em;
+      font-weight: 600;
+      color: var(--dark-grey);
+      word-break: break-word;
+    }
+
+    .profile-section {
+      margin-top: 25px;
+    }
+
+    .profile-section-title {
+      font-size: 1.1em;
+      font-weight: 700;
+      color: var(--dark-grey);
+      margin-bottom: 15px;
+      padding-bottom: 10px;
+      border-bottom: 2px solid var(--primary-green);
+    }
+
+    .resume-upload-area {
+      background: white;
+      border: 2px dashed var(--primary-green);
+      border-radius: 8px;
+      padding: 30px;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.3s;
+      margin-bottom: 20px;
+    }
+
+    .resume-upload-area:hover {
+      background: rgba(76, 175, 79, 0.05);
+      border-color: #45a049;
+    }
+
+    .resume-upload-area input[type="file"] {
+      display: none;
+    }
+
+    .upload-icon {
+      font-size: 2.5em;
+      margin-bottom: 10px;
+    }
+
+    .upload-text {
+      font-weight: 600;
+      color: var(--primary-green);
+      margin-bottom: 5px;
+    }
+
+    .upload-subtext {
+      font-size: 0.9em;
+      color: var(--text-light);
+    }
+
+    .resume-file-info {
+      background: rgba(76, 175, 79, 0.1);
+      padding: 15px;
+      border-radius: 6px;
+      margin-bottom: 15px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .resume-file-info.hidden {
+      display: none;
+    }
+
+    .file-icon {
+      font-size: 1.5em;
+    }
+
+    .file-details {
+      flex: 1;
+    }
+
+    .file-name {
+      font-weight: 600;
+      color: var(--dark-grey);
+    }
+
+    .file-size {
+      font-size: 0.85em;
+      color: var(--text-light);
+    }
+
+    .remove-file-btn {
+      background: #f44;
+      color: white;
+      border: none;
+      padding: 5px 12px;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 0.85em;
+      font-weight: 600;
+    }
+
+    .action-buttons {
+      display: flex;
+      gap: 10px;
+      margin-top: 25px;
+    }
+
+    .btn-logout {
+      background: #f44;
+      color: white;
+      padding: 12px 28px;
+      border: none;
+      border-radius: 6px;
+      font-size: 0.95em;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.3s;
+      flex: 1;
+    }
+
+    .btn-logout:hover {
+      background: #d32f2f;
+    }
+
+    /* ===== JOBS TAB STYLES ===== */
+    .jobs-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+      gap: 15px;
+    }
+
+    .search-bar {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      flex: 1;
+    }
+
+    .search-bar input[type="text"] {
+      flex: 1;
+      padding: 10px 15px;
+      border: 1.5px solid var(--border-color);
+      border-radius: 6px;
+      font-size: 0.95em;
+      font-family: 'Inter', Arial, sans-serif;
+    }
+
+    .search-bar input[type="text"]:focus {
+      outline: none;
+      border-color: var(--primary-green);
+      box-shadow: 0 0 0 3px rgba(76, 175, 79, 0.1);
+    }
+
+    .search-bar button {
+      background: var(--primary-green);
+      color: white;
+      border: none;
+      border-radius: 6px;
+      font-size: 0.95em;
+      font-weight: 600;
+      padding: 10px 24px;
+      cursor: pointer;
+      transition: background 0.3s;
+      white-space: nowrap;
+    }
+
+    .search-bar button:hover {
+      background: #45a049;
+    }
+
+    .filter-btn {
+      background: white;
+      border: 1.5px solid var(--border-color);
+      color: var(--dark-grey);
+      padding: 10px 20px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: 600;
+      font-size: 0.9em;
+      transition: all 0.3s;
+    }
+
+    .filter-btn:hover {
+      border-color: var(--primary-green);
+      color: var(--primary-green);
+    }
+
+    .section-title {
+      font-size: 1.15em;
+      font-weight: 700;
+      color: var(--dark-grey);
+      margin: 20px 0 15px 0;
+    }
+
+    .job-list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    .job-list li {
+      background: white;
+      margin-bottom: 12px;
+      border-radius: 8px;
+      padding: 18px;
+      box-shadow: 0 2px 8px #00000008;
+      border: 1px solid var(--border-color);
+      transition: all 0.3s;
+      cursor: pointer;
+    }
+
+    .job-list li:hover {
+      box-shadow: 0 4px 16px #00000012;
+      transform: translateY(-2px);
+      border-color: var(--primary-green);
+    }
+
+    .job-list-title {
+      font-weight: 700;
+      color: var(--primary-green);
+      font-size: 1.05em;
+      margin-bottom: 8px;
+    }
+
+    .job-list-desc {
+      color: var(--text-light);
+      font-size: 0.95em;
+      margin-bottom: 10px;
+      line-height: 1.5;
+    }
+
+    .job-list-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 15px;
+      font-size: 0.9em;
+    }
+
+    .job-list-loc {
+      color: #e74c3c;
+      font-weight: 500;
+    }
+
+    .job-list-type {
+      color: var(--primary-green);
+      font-weight: 500;
+    }
+
+    .empty-state {
+      text-align: center;
+      padding: 40px 20px;
+      color: var(--text-light);
+    }
+
+    .empty-state-icon {
+      font-size: 3em;
+      margin-bottom: 15px;
+    }
+
+    /* ===== DASHBOARD TAB STYLES ===== */
+    .welcome-card {
+      background: linear-gradient(135deg, var(--primary-green), #45a049);
+      color: white;
+      padding: 30px;
+      border-radius: 10px;
+      margin-bottom: 25px;
+      box-shadow: 0 4px 12px rgba(76, 175, 79, 0.2);
+    }
+
+    .welcome-text {
+      font-size: 1.3em;
+      font-weight: 700;
+      margin: 0;
+    }
+
+    .welcome-subtext {
+      font-size: 0.95em;
+      opacity: 0.9;
+      margin-top: 5px;
+    }
+
+    /* ===== BOTTOM NAV STYLING ===== */
+    .bottom-nav {
+      position: fixed;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      width: 100vw;
+      background: white;
+      border-top: 1.5px solid var(--border-color);
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      z-index: 1000;
+      padding: 0;
+      height: 56px;
+      max-width: 750px;
+      margin: 0 auto;
+      box-shadow: 0 -2px 8px #00000005;
+    }
+
+    .nav-btn {
+      flex: 1 1 33.3%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      color: var(--text-light);
+      padding: 2px 0 0 0;
+      border: none;
+      background: none;
+      font-size: 0.85em;
+      transition: color 0.18s;
+      outline: none;
+      cursor: pointer;
+      height: 100%;
+      position: relative;
+      font-weight: 500;
+    }
+
+    .nav-btn.active {
+      color: var(--primary-green);
+      font-weight: 700;
+    }
+
+    .nav-btn svg {
+      display: block;
+      margin: 0 auto 4px auto;
+      width: 24px;
+      height: 24px;
+      fill: currentColor;
+    }
+
+    @media (max-width: 800px) {
+      .main-content, .bottom-nav {
+        max-width: 100vw;
+      }
+    }
+
+    @media (max-width: 600px) {
+      .main-content {
+        padding: 14px 2vw 70px 2vw;
+      }
+      
+      h2 {
+        font-size: 1.3em;
+      }
+
+      .profile-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .jobs-header {
+        flex-direction: column;
+      }
+
+      .search-bar {
+        flex-direction: column;
+      }
+
+      .search-bar input, .search-bar button {
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>OGONI JOB HUB</header>
+  <div class="main-content">
+    <!-- DASHBOARD -->
+    <div id="tab-dashboard" class="tab-view active">
+      <div class="welcome-card">
+        <p class="welcome-text">Hello, <span id="dashboard-name">User</span>! 👋</p>
+        <p class="welcome-subtext">Welcome back to Ogoni Job Hub</p>
+      </div>
+
+      <div class="jobs-header">
+        <div class="search-bar" style="flex: 1;">
+          <input type="text" id="job-search-input-dashboard" placeholder="Search for jobs...">
+          <button id="job-search-btn-dashboard">Search</button>
+        </div>
+      </div>
+
+      <div class="section-title">Featured Opportunities</div>
+      <ul class="job-list" id="dashboard-jobs-list">
+        <li><div class="empty-state"><div class="empty-state-icon">💼</div><p>Loading jobs...</p></div></li>
+      </ul>
+    </div>
+
+    <!-- PROFILE -->
+    <div id="tab-profile" class="tab-view">
+      <h2>My Profile</h2>
+      
+      <!-- Profile Header with Avatar -->
+      <div class="profile-header">
+        <div class="profile-avatar" id="profile-avatar">👤</div>
+        <div class="profile-name" id="profile-name">-</div>
+        <div class="profile-email" id="profile-email">-</div>
+        <div class="profile-field" id="profile-field">-</div>
+      </div>
+
+      <!-- Main Profile Info Grid -->
+      <div class="profile-grid">
+        <div class="profile-card">
+          <div class="profile-card-title">Email</div>
+          <div class="profile-card-value" id="profile-email-card">-</div>
+        </div>
+        <div class="profile-card">
+          <div class="profile-card-title">Phone</div>
+          <div class="profile-card-value" id="profile-phone">-</div>
+        </div>
+        <div class="profile-card">
+          <div class="profile-card-title">Date of Birth</div>
+          <div class="profile-card-value" id="profile-dob">-</div>
+        </div>
+        <div class="profile-card">
+          <div class="profile-card-title">Gender</div>
+          <div class="profile-card-value" id="profile-gender">-</div>
+        </div>
+        <div class="profile-card">
+          <div class="profile-card-title">Marital Status</div>
+          <div class="profile-card-value" id="profile-marital">-</div>
+        </div>
+        <div class="profile-card">
+          <div class="profile-card-title">Experience</div>
+          <div class="profile-card-value" id="profile-exp">-</div>
+        </div>
+      </div>
+
+      <!-- Location Information Section -->
+      <div class="profile-section">
+        <div class="profile-section-title">📍 Location Information</div>
+        <div class="profile-grid">
+          <div class="profile-card">
+            <div class="profile-card-title">State</div>
+            <div class="profile-card-value" id="profile-state">-</div>
+          </div>
+          <div class="profile-card">
+            <div class="profile-card-title">LGA</div>
+            <div class="profile-card-value" id="profile-lga">-</div>
+          </div>
+          <div class="profile-card">
+            <div class="profile-card-title">Hometown</div>
+            <div class="profile-card-value" id="profile-hometown">-</div>
+          </div>
+          <div class="profile-card">
+            <div class="profile-card-title">Current Address</div>
+            <div class="profile-card-value" id="profile-current">-</div>
+          </div>
+          <div class="profile-card">
+            <div class="profile-card-title">Permanent Address</div>
+            <div class="profile-card-value" id="profile-perm">-</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Career Information Section -->
+      <div class="profile-section">
+        <div class="profile-section-title">💼 Career Information</div>
+        <div class="profile-grid">
+          <div class="profile-card">
+            <div class="profile-card-title">Professional Field</div>
+            <div class="profile-card-value" id="profile-field-card">-</div>
+          </div>
+          <div class="profile-card">
+            <div class="profile-card-title">Area of Interest</div>
+            <div class="profile-card-value" id="profile-interest">-</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Resume Upload Section -->
+      <div class="profile-section">
+        <div class="profile-section-title">📄 Resume</div>
+        <div class="resume-file-info hidden" id="resume-file-info">
+          <div class="file-icon">📄</div>
+          <div class="file-details">
+            <div class="file-name" id="resume-file-name">resume.pdf</div>
+            <div class="file-size" id="resume-file-size">0 KB</div>
+          </div>
+          <button class="remove-file-btn" onclick="removeResume()">Remove</button>
+        </div>
+        <div class="resume-upload-area" onclick="document.getElementById('resume-input').click()">
+          <div class="upload-icon">📤</div>
+          <div class="upload-text">Upload Your Resume</div>
+          <div class="upload-subtext">Click to select or drag and drop (PDF, DOC, DOCX)</div>
+          <input type="file" id="resume-input" accept=".pdf,.doc,.docx" onchange="handleResumeUpload(event)">
+        </div>
+      </div>
+
+      <!-- Action Buttons -->
+      <div class="action-buttons">
+        <button class="btn-logout" onclick="logout()">🚪 Logout</button>
+      </div>
+    </div>
+
+    <!-- JOBS -->
+    <div id="tab-jobs" class="tab-view">
+      <h2>Jobs Board</h2>
+      
+      <div class="jobs-header">
+        <div class="search-bar">
+          <input type="text" id="job-search-input" placeholder="Search for jobs by title...">
+          <button id="job-search-btn">Search</button>
+        </div>
+      </div>
+
+      <div class="section-title">All Available Positions</div>
+      <ul class="job-list" id="jobs-list">
+        <li><div class="empty-state"><div class="empty-state-icon">💼</div><p>Loading jobs...</p></div></li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- Bottom Navigation Bar -->
+  <nav class="bottom-nav">
+    <button class="nav-btn active" data-tab="dashboard" aria-label="Dashboard">
+      <svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+      Dashboard
+    </button>
+    <button class="nav-btn" data-tab="profile" aria-label="Profile">
+      <svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M21,21C21,16.58,16.42,13,12,13s-9,3.58-9,8"/></svg>
+      Profile
+    </button>
+    <button class="nav-btn" data-tab="jobs" aria-label="Jobs">
+      <svg viewBox="0 0 24 24"><path d="M4 7V6a4 4 0 0 1 4-4h8a4 4 0 0 1 4 4v1"/><rect x="3" y="7" width="18" height="14" rx="2"/><path d="M16 21v-4a4 4 0 0 0-8 0v4"/></svg>
+      Jobs
+    </button>
+  </nav>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script>
+    // --- Supabase config ---
+    const supabaseUrl = "https://zskfpfxaonwnfwhfwnlw.supabase.co";
+    const supabaseKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inpza2ZwZnhhb253bmZ3aGZ3bmx3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzcyMDYzMzQsImV4cCI6MjA5Mjc4MjMzNH0.C5e7kPILz52eIQCuwwcg6cNLhA-hqyqRVmit5HR-0J0";
+    const supabaseClient = window.supabase.createClient(supabaseUrl, supabaseKey);
+    
+    // Auth check and profile fetch
+    let userProfile = {};
+    async function fetchProfile() {
+      let { data: { user } } = await supabaseClient.auth.getUser();
+      if (!user) {
+        // Try from localStorage (first login after signup)
+        const localProf = JSON.parse(localStorage.getItem('ogonijobhub_profile') || '{}');
+        if (localProf && localProf.email) {
+          // Try to fetch via users table
+          const { data: rows, error } = await supabaseClient.from('users').select('*').eq('email', localProf.email).limit(1);
+          if (rows && rows.length) userProfile = rows[0];
+          else userProfile = localProf;
+        } else {
+          window.location='login.html'; // Not logged in
+        }
+      } else {
+        // From users table by user.id or email
+        let { data: udata, error } = await supabaseClient.from('users').select('*').eq('user_id', user.id).single();
+        if (!udata) { // fallback: try by email
+          ({ data: udata } = await supabaseClient.from('users').select('*').eq('email', user.email).single());
+        }
+        userProfile = udata || {};
+        // Save so page refresh retains profile
+        localStorage.setItem('ogonijobhub_profile', JSON.stringify(userProfile));
+      }
+      fillProfile(userProfile);
+    }
+
+    function fillProfile(profile){
+      // Generate avatar initials
+      const initials = (profile.full_name || 'U')
+        .split(' ')
+        .map(n => n[0])
+        .join('')
+        .toUpperCase()
+        .slice(0, 2);
+      
+      document.getElementById('profile-avatar').textContent = initials || '👤';
+
+      // Dashboard welcome
+      document.getElementById('dashboard-name').textContent = profile.full_name || 'User';
+      
+      // Profile fields
+      document.getElementById('profile-name').textContent = profile.full_name || '-';
+      document.getElementById('profile-email').textContent = profile.email || '-';
+      document.getElementById('profile-email-card').textContent = profile.email || '-';
+      document.getElementById('profile-dob').textContent = profile.dob || '-';
+      document.getElementById('profile-gender').textContent = profile.gender || '-';
+      document.getElementById('profile-marital').textContent = profile.marital || '-';
+      document.getElementById('profile-state').textContent = profile.state || '-';
+      document.getElementById('profile-lga').textContent = profile.lga || '-';
+      document.getElementById('profile-hometown').textContent = profile.hometown || '-';
+      document.getElementById('profile-current').textContent = profile.current_addr || '-';
+      document.getElementById('profile-perm').textContent = profile.perm_addr || '-';
+      document.getElementById('profile-phone').textContent = profile.phone || '-';
+      document.getElementById('profile-field').textContent = profile.field || '-';
+      document.getElementById('profile-field-card').textContent = profile.field || '-';
+      document.getElementById('profile-exp').textContent = profile.experience || '-';
+      document.getElementById('profile-interest').textContent = profile.interest || '-';
+    }
+
+    // Resume Upload Handler
+    function handleResumeUpload(event) {
+      const file = event.target.files[0];
+      if (!file) return;
+
+      const maxSize = 5 * 1024 * 1024; // 5MB
+      if (file.size > maxSize) {
+        alert('File size must be less than 5MB');
+        return;
+      }
+
+      const fileInfo = document.getElementById('resume-file-info');
+      document.getElementById('resume-file-name').textContent = file.name;
+      document.getElementById('resume-file-size').textContent = (file.size / 1024).toFixed(2) + ' KB';
+      fileInfo.classList.remove('hidden');
+
+      // You can add upload to Supabase storage here
+      console.log('Resume selected:', file.name);
+    }
+
+    function removeResume() {
+      document.getElementById('resume-input').value = '';
+      document.getElementById('resume-file-info').classList.add('hidden');
+    }
+
+    // Jobs Fetch
+ async function fetchJobs(query, toId) {
+  let el = document.getElementById(toId);
+  el.innerHTML = '<li><div class="empty-state"><div class="empty-state-icon">⏳</div><p>Loading jobs...</p></div></li>';
+  
+  try {
+    let { data: jobs, error } = query
+      ? await supabaseClient.from('jobs').select('*').ilike('title', `%${query}%`)
+      : await supabaseClient.from('jobs').select('*');
+    
+    if (error) {
+      console.error('Database error:', error);
+      el.innerHTML = '<li><div class="empty-state"><div class="empty-state-icon">⚠️</div><p>Database error. Please try again.</p></div></li>';
+      return;
+    }
+
+    if (!jobs || !jobs.length) {
+      el.innerHTML = '<li><div class="empty-state"><div class="empty-state-icon">📭</div><p>No jobs found. Try a different search!</p></div></li>';
+      return;
+    }
+    
+    el.innerHTML = jobs.map(job => `
+      <li>
+        <div class="job-list-title">${job.title || 'Job Title'}</div>
+        <div class="job-list-desc">${job.description || 'No description available'}</div>
+        <div class="job-list-meta">
+          ${job.location ? `<span class="job-list-loc">📍 ${job.location}</span>` : ''}
+          ${job.job_type ? `<span class="job-list-type">💼 ${job.job_type}</span>` : ''}
+        </div>
+      </li>
+    `).join('');
+  } catch (err) {
+    console.error('Network error:', err);
+    el.innerHTML = '<li><div class="empty-state"><div class="empty-state-icon">📡</div><p>Network error: Cannot reach the server.<br>Check your internet connection.</p></div></li>';
+  }
+}
+
+    // Navbar
+    document.querySelectorAll('.nav-btn').forEach(btn => {
+      btn.addEventListener('click', function () {
+        document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        let tab = btn.getAttribute('data-tab');
+        document.querySelectorAll('.tab-view').forEach(t => t.classList.remove('active'));
+        document.getElementById('tab-' + tab).classList.add('active');
+      });
+    });
+
+    // Dashboard Job Search
+    document.getElementById('job-search-btn-dashboard').onclick = () => {
+      let q = document.getElementById('job-search-input-dashboard').value.trim();
+      fetchJobs(q, "dashboard-jobs-list");
+    }
+    document.getElementById('job-search-input-dashboard').addEventListener('keyup', function(e){
+      if (e.key==="Enter") document.getElementById('job-search-btn-dashboard').click();
+    });
+
+    // Jobs Tab Search
+    document.getElementById('job-search-btn').onclick = () => {
+      let q = document.getElementById('job-search-input').value.trim();
+      fetchJobs(q, "jobs-list");
+    }
+    document.getElementById('job-search-input').addEventListener('keyup', function(e){
+      if (e.key==="Enter") document.getElementById('job-search-btn').click();
+    });
+
+    // Logout
+    async function logout() {
+      await supabaseClient.auth.signOut();
+      localStorage.removeItem('ogonijobhub_profile');
+      window.location = 'login.html';
+    }
+    window.logout = logout;
+
+    // --- On page load
+    fetchProfile();
+    fetchJobs('', "dashboard-jobs-list");
+    fetchJobs('', "jobs-list");
+  </script>
+</body>
+</html>

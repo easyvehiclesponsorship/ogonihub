@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OGONI JOB HUB</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@500;700&family=Roboto:wght@400;500&display=swap" rel="stylesheet">
+</head>
+<body>
+
+    <div class="container">
+        <header>
+            <a href="index.html" class="logo">
+                <img src="/hero-illustration.png" alt="Logo Icon" class="logo-icon">
+                OGONI JOB HUB
+            </a>
+            
+            <button class="menu-toggle" aria-label="Toggle navigation">
+                <span class="hamburger"></span>
+            </button>
+
+            <nav>
+                <ul class="nav-links">
+                    <li><a href="#home">Home</a></li>
+                    <li><a href="#features">Features</a></li>
+                    <li><a href="#community">Community</a></li>
+                    <li><a href="#blog">Blog</a></li>
+                    <li><a href="#">Premium</a></li>
+                </ul>
+            </nav>
+            
+            <a href="create.html" class="nav-button header-register">Register Now →</a>
+        </header>
+
+        <main class="hero">
+            <div class="hero-text">
+                <h1 class="hero-title">
+                    Find Jobs That Match Your Skills<br>
+                    <span class="highlight">Upload Your CV Today</span>
+                </h1>
+                <p class="hero-subtitle">Create an account, upload your CV, and get matched with people who need your services.</p>
+                <a href="#register" class="hero-button">Register</a>
+            </div>
+            
+            <div class="hero-image-container">
+                <img src="/hero-illustration.png" alt="Job platform illustration" class="hero-main-image">
+            </div>
+        </main>
+
+        <div class="pagination-container">
+            <div class="pagination-dot active" data-index="0"></div>
+            <div class="pagination-dot" data-index="1"></div>
+            <div class="pagination-dot" data-index="2"></div>
+        </div>
+    </div>
+
+<section class="clients-community-section">
+    <div class="container clients-section">
+        <h2 class="section-title">Our Employers & Partners</h2>
+        <p class="section-subtitle">We connect job seekers with trusted businesses and individuals looking for skilled workers.</p>
+        
+        <div class="logo-carousel">
+            <div class="logo-item"><img src="data:image/png;base64,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" alt="Client Logo 1"></div>
+            <div class="logo-item"><img src="https://media.telanganatoday.com/wp-content/uploads/2025/01/LinkedIn-launches-AI-powered-job-match-feature-to-simplify-job-search-recruitment.jpg" alt="Client Logo 2"></div>
+            <div class="logo-item"><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTcnaKAZ-Ddg764o6f7TZvrS_pZCM8-nYzYng&s" alt="Client Logo 3"></div>
+            <div class="logo-item"><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTOSTFz-AAoDdOM9OtNvo9nnyXvbtonD1l3hQ&s" alt="Client Logo 4"></div>
+            <div class="logo-item"><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTLu29cD1sW_Vty4d1w7VWSBCR9CxFFZ4S2TA&s" alt="Client Logo 5"></div>
+            <div class="logo-item"><img src="https://www.hrotoday.com/wp-content/uploads/2023/01/Flexjobs.png" alt="Client Logo 6"></div>
+            <div class="logo-item"><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcToP1eLHR15wSIAOqsFja4jUI2dh4eG72BfWQ&s" alt="Client Logo 7"></div>
+        </div>
+    </div>
+
+    <div class="container community-section">
+        <h2 class="main-heading">Manage your job search in one place</h2>
+        <p class="community-subtitle">Who is OGONI JOB HUB for?</p>
+        
+        <div class="card-grid">
+            <div class="card">
+                <div class="icon-wrapper">
+                    <img src="https://plus.unsplash.com/premium_photo-1683121855240-5d3f67a5fdec?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8aGlyaW5nfGVufDB8fDB8fHww" alt="Job Seekers Icon" class="card-icon">
+                </div>
+                <h3>Job Seekers</h3>
+            </div>
+            
+            <div class="card">
+                <div class="icon-wrapper">
+                    <img src="https://images.unsplash.com/photo-1507679799987-c73779587ccf?q=80&w=871&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Employers Icon" class="card-icon">
+                </div>
+                <h3>Employers</h3>
+                <p>Find qualified candidates quickly and easily for your business needs.</p>
+            </div>
+            
+            <div class="card">
+                <div class="icon-wrapper">
+                    <img src="https://images.unsplash.com/photo-1517048676732-d65bc937f952?q=80&w=870&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Freelancers Icon" class="card-icon">
+                </div>
+                <h3>Freelancers & Skilled Workers</h3>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="testimonial-slider-section">
+    <div class="testimonial-header">
+        <h2>TESTIMONIALS: REAL STORIES FROM JOB SEEKERS & EMPLOYERS</h2>
+        <p>See how OGONI JOB HUB is connecting people to opportunities.</p>
+    </div>
+
+    <div class="slider-container">
+        <div class="slider-track">
+            <div class="testimonial-card main-card">
+                <div class="card-image">
+                    <img src="https://images.unsplash.com/photo-1605602517387-ec78b947335e?q=80&w=375&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="User">
+                </div>
+                <div class="card-content">
+                    <h4>Success Story</h4>
+                    <h5>OGONI JOB HUB User</h5>
+                    <blockquote>
+                        "OGONI JOB HUB helped me connect with people who needed my skills. I uploaded my CV and started getting job offers almost immediately."
+                    </blockquote>
+                    <div class="author-info">
+                        <div class="logo-circle">OJH</div>
+                        <div>
+                            <strong>Community Member</strong><br>
+                            <span>Verified User</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="testimonial-card side-card">
+                <img src="https://images.unsplash.com/photo-1552493450-2b5ce80ed13f?q=80&w=814&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Team">
+                <div class="side-content">
+                    <p>...helped me find workers fast...</p>
+                    <span>Employers</span>
+                </div>
+            </div>
+
+            <div class="testimonial-card side-card">
+                <img src="https://images.unsplash.com/photo-1440451185281-11ff5853ce0a?q=80&w=774&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Career">
+                <div class="side-content">
+                    <p>...I got hired within days...</p>
+                    <span>Job Seekers</span>
+                </div>
+            </div>
+            
+            <div class="testimonial-card main-card">
+            </div>
+        </div>
+    </div>
+
+    <div class="slider-controls">
+        <span class="arrow">←</span>
+        <div class="dots">
+            <span class="dot active"></span>
+            <span class="dot"></span>
+            <span class="dot"></span>
+            <span class="dot"></span>
+        </div>
+        <span class="auto-label">AUTOMATIC SLIDE</span>
+    </div>
+
+    <div class="footer-cta">
+        <p>Experience smooth and continuous browsing of job opportunities.</p>
+        <a href="#" class="cta-button">EXPLORE JOB OPPORTUNITIES</a>
+    </div>
+</section>
+
+<section class="job-seeker-purpose">
+  <div class="container">
+    <div class="header-content">
+      <h2>WHY JOIN OGONI JOB HUB?</h2>
+      <p>Connecting talent with real opportunities in your community.</p>
+    </div>
+
+    <div class="features-grid">
+      <div class="feature-card">
+        <div class="icon-box"></div>
+        <div class="card-text">
+          <h3>Smart Job Matching</h3>
+          <ul>
+            <li>Get matched based on your skills</li>
+            <li>Connect directly with employers</li>
+            <li>Discover opportunities near you</li>
+          </ul>
+          <a href="#" class="learn-more">Find a Job →</a>
+        </div>
+      </div>
+
+      <div class="feature-card">
+        <div class="icon-box"></div>
+        <div class="card-text">
+          <h3>Build Your Profile</h3>
+          <ul>
+            <li>Upload your CV easily</li>
+            <li>Highlight your experience</li>
+            <li>Increase your visibility</li>
+          </ul>
+          <a href="#" class="learn-more">Create Profile →</a>
+        </div>
+      </div>
+
+      <div class="feature-card">
+        <div class="icon-box"></div>
+        <div class="card-text">
+          <h3>Get Hired Faster</h3>
+          <ul>
+            <li>Employers contact you directly</li>
+            <li>No long application process</li>
+            <li>Quick hiring process</li>
+          </ul>
+          <a href="#" class="learn-more">Start Now →</a>
+        </div>
+      </div>
+
+      <div class="feature-card">
+        <div class="icon-box"></div>
+        <div class="card-text">
+          <h3>Local Opportunities</h3>
+          <ul>
+            <li>Find jobs near you</li>
+            <li>Work with trusted people</li>
+            <li>Grow your network</li>
+          </ul>
+          <a href="#" class="learn-more">Explore Jobs →</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="cta-wrapper"></div>
+  </div>
+</section>
+
+<section class="application-process">
+  <div class="container">
+    <div class="header-content">
+      <h2>How It Works</h2>
+      <p>Start your journey to getting hired in simple steps.</p>
+    </div>
+
+    <div class="process-wrapper">
+      <div class="process-step">
+        <div class="step-number">1</div>
+        <div class="step-card">
+          <div class="step-icon">👤</div>
+          <h3>Create Account</h3>
+          <p>Sign up and create your profile in minutes.</p>
+        </div>
+      </div>
+
+      <div class="process-step">
+        <div class="step-number">2</div>
+        <div class="step-card">
+          <div class="step-icon">📄</div>
+          <h3>Upload CV</h3>
+          <p>Upload your CV and showcase your skills.</p>
+        </div>
+      </div>
+
+      <div class="process-step">
+        <div class="step-number">3</div>
+        <div class="step-card">
+          <div class="step-icon">🔍</div>
+          <h3>Get Matched</h3>
+          <p>We connect you with people who need your service.</p>
+        </div>
+      </div>
+
+      <div class="process-step">
+        <div class="step-number">4</div>
+        <div class="step-card">
+          <div class="step-icon">🎯</div>
+          <h3>Connect</h3>
+          <p>Employers contact you or you apply directly.</p>
+        </div>
+      </div>
+
+      <div class="process-step">
+        <div class="step-number">5</div>
+        <div class="step-card">
+          <div class="step-icon">🤝</div>
+          <h3>Get Hired</h3>
+          <p>Secure jobs and start earning.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="cta-wrapper">
+      <button class="primary-btn" id="start-btn">Start Your Process Now</button>
+    </div>
+  </div>
+</section>
+
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-grid">
+      
+      <div class="footer-col brand-col">
+        <h2 class="footer-logo">OGONI JOB HUB</h2>
+        <p>Connecting job seekers with real opportunities and helping employers find the right talent quickly and easily.</p>
+        <div class="social-links">
+          <a href="#"><span>FB</span></a>
+          <a href="#"><span>TW</span></a>
+          <a href="#"><span>LN</span></a>
+          <a href="#"><span>IG</span></a>
+        </div>
+      </div>
+
+      <div class="footer-col">
+        <h3>Company</h3>
+        <ul>
+          <li><a href="#">About Us</a></li>
+          <li><a href="#">Employers</a></li>
+          <li><a href="#">Testimonials</a></li>
+          <li><a href="#">Jobs</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col">
+        <h3>Support</h3>
+        <ul>
+          <li><a href="#">Help Center</a></li>
+          <li><a href="#">Terms of Service</a></li>
+          <li><a href="#">Legal</a></li>
+          <li><a href="#">Privacy Policy</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col contact-col">
+        <h3>Stay Connected</h3>
+        <div class="contact-item">
+          <span class="icon">📧</span>
+          <a href="mailto:support@ogonijobhub.com">support@ogonijobhub.com</a>
+        </div>
+        <div class="contact-item">
+          <span class="icon">📞</span>
+          <a href="tel:+234000000000">+234 XXX XXX XXXX</a>
+        </div>
+        <div class="newsletter">
+          <p>Subscribe to our newsletter</p>
+          <form class="footer-form">
+            <input type="email" placeholder="Your email address" required>
+            <button type="submit">➔</button>
+          </form>
+        </div>
+      </div>
+
+    </div>
+    
+    <div class="footer-bottom">
+      <p>&copy; 2026 OGONI JOB HUB. All rights reserved.</p>
+    </div>
+  </div>
+</footer>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="script.js"></script>
+</body>
+</html>
