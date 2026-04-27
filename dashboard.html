@@ -5,211 +5,249 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Dashboard | OGONI HR HUB</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-  
   <link rel="stylesheet" href="dashboard.css">
 </head>
 <body>
-  <header>OGONI HR HUB</header>
-  <div class="main-content">
-    <!-- POSTS TAB -->
-    <div id="tab-posts" class="tab-view active">
-      <h2>Community Posts</h2>
-      
-      <!-- Create Post Card -->
-      <div class="post-create-card">
-        <div class="post-input-wrapper">
-          <div class="post-avatar" id="create-post-avatar">U</div>
-          <div class="post-input-area">
-            <textarea class="post-input" id="post-content" placeholder="Share something with the community..."></textarea>
-            <div class="post-actions">
-              <button class="post-btn cancel" onclick="clearPost()">Cancel</button>
-              <button class="post-btn" onclick="createPost()">Post</button>
+  <div class="main-wrapper">
+    <div class="main-content">
+      <!-- POSTS TAB -->
+      <div id="tab-posts" class="tab-view active">
+        <!-- Posts Top Bar with Search -->
+        <div class="posts-top-bar">
+          <div class="profile-avatar-mini" id="user-avatar-mini">U</div>
+          <div class="search-box">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="11" cy="11" r="8"></circle>
+              <path d="m21 21-4.35-4.35"></path>
+            </svg>
+            <input type="text" placeholder="Search posts, people...">
+          </div>
+          <button class="posts-menu-btn">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+              <circle cx="12" cy="5" r="2"></circle>
+              <circle cx="12" cy="12" r="2"></circle>
+              <circle cx="12" cy="19" r="2"></circle>
+            </svg>
+          </button>
+        </div>
+
+        <!-- Posts Feed -->
+        <div class="posts-feed" id="posts-feed">
+          <div class="empty-state">
+            <div class="empty-state-icon">📝</div>
+            <p>No posts yet. Be the first to share something!</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- JOBS TAB -->
+      <div id="tab-jobs" class="tab-view">
+        <div class="tab-header">
+          <h2>Jobs Board</h2>
+        </div>
+        
+        <div class="jobs-header">
+          <div class="search-bar">
+            <input type="text" id="job-search-input" placeholder="Search for jobs by title...">
+            <button id="job-search-btn">Search</button>
+          </div>
+        </div>
+
+        <div class="section-title">All Available Positions</div>
+        <ul class="job-list" id="jobs-list">
+          <li><div class="empty-state"><div class="empty-state-icon">💼</div><p>Loading jobs...</p></div></li>
+        </ul>
+      </div>
+
+      <!-- PROVIDER TAB -->
+      <div id="tab-provider" class="tab-view">
+        <div class="tab-header">
+          <h2>Find Service Providers</h2>
+        </div>
+        
+        <!-- Skills Filter Dropdown -->
+        <div class="provider-filters">
+          <select id="skill-filter" class="skill-dropdown" onchange="filterProvidersBySkill()">
+            <option value="">All Skills</option>
+          </select>
+        </div>
+
+        <div class="provider-search">
+          <input type="text" id="provider-search-input" placeholder="Search by name or skill...">
+          <button id="provider-search-btn">Search</button>
+        </div>
+
+        <div class="provider-grid" id="provider-grid">
+          <div class="empty-state">
+            <div class="empty-state-icon">🔍</div>
+            <p>Search for service providers by their skill...</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- PROFILE TAB -->
+      <div id="tab-profile" class="tab-view">
+        <div class="tab-header">
+          <h2>My Profile</h2>
+        </div>
+        
+        <!-- Profile Header with Avatar -->
+        <div class="profile-header">
+          <div class="profile-avatar" id="profile-avatar">👤</div>
+          <div class="profile-name" id="profile-name">-</div>
+          <div class="profile-email" id="profile-email">-</div>
+          <div class="profile-field" id="profile-field">-</div>
+        </div>
+
+        <!-- Main Profile Info Grid -->
+        <div class="profile-grid">
+          <div class="profile-card">
+            <div class="profile-card-title">Email</div>
+            <div class="profile-card-value" id="profile-email-card">-</div>
+          </div>
+          <div class="profile-card">
+            <div class="profile-card-title">Phone</div>
+            <div class="profile-card-value" id="profile-phone">-</div>
+          </div>
+          <div class="profile-card">
+            <div class="profile-card-title">Date of Birth</div>
+            <div class="profile-card-value" id="profile-dob">-</div>
+          </div>
+          <div class="profile-card">
+            <div class="profile-card-title">Gender</div>
+            <div class="profile-card-value" id="profile-gender">-</div>
+          </div>
+          <div class="profile-card">
+            <div class="profile-card-title">Marital Status</div>
+            <div class="profile-card-value" id="profile-marital">-</div>
+          </div>
+          <div class="profile-card">
+            <div class="profile-card-title">Experience</div>
+            <div class="profile-card-value" id="profile-exp">-</div>
+          </div>
+        </div>
+
+        <!-- Location Information Section -->
+        <div class="profile-section">
+          <div class="profile-section-title">📍 Location Information</div>
+          <div class="profile-grid">
+            <div class="profile-card">
+              <div class="profile-card-title">State</div>
+              <div class="profile-card-value" id="profile-state">-</div>
+            </div>
+            <div class="profile-card">
+              <div class="profile-card-title">LGA</div>
+              <div class="profile-card-value" id="profile-lga">-</div>
+            </div>
+            <div class="profile-card">
+              <div class="profile-card-title">Hometown</div>
+              <div class="profile-card-value" id="profile-hometown">-</div>
+            </div>
+            <div class="profile-card">
+              <div class="profile-card-title">Current Address</div>
+              <div class="profile-card-value" id="profile-current">-</div>
+            </div>
+            <div class="profile-card">
+              <div class="profile-card-title">Permanent Address</div>
+              <div class="profile-card-value" id="profile-perm">-</div>
             </div>
           </div>
         </div>
-      </div>
 
-      <!-- Posts Feed -->
-      <div class="posts-feed" id="posts-feed">
-        <div class="empty-state">
-          <div class="empty-state-icon">📝</div>
-          <p>No posts yet. Be the first to share something!</p>
+        <!-- Career Information Section -->
+        <div class="profile-section">
+          <div class="profile-section-title">💼 Career Information</div>
+          <div class="profile-grid">
+            <div class="profile-card">
+              <div class="profile-card-title">Professional Field</div>
+              <div class="profile-card-value" id="profile-field-card">-</div>
+            </div>
+            <div class="profile-card">
+              <div class="profile-card-title">Area of Interest</div>
+              <div class="profile-card-value" id="profile-interest">-</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Verification Section -->
+        <div class="profile-section">
+          <div class="profile-section-title">🆔 Verification Details</div>
+          <div class="profile-grid">
+            <div class="profile-card">
+              <div class="profile-card-title">ID Type</div>
+              <div class="profile-card-value" id="profile-id-type">-</div>
+            </div>
+            <div class="profile-card">
+              <div class="profile-card-title">ID Number</div>
+              <div class="profile-card-value" id="profile-id-number">-</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Referee Section -->
+        <div class="profile-section">
+          <div class="profile-section-title">👥 Professional Reference</div>
+          <div class="profile-grid">
+            <div class="profile-card">
+              <div class="profile-card-title">Referee Name</div>
+              <div class="profile-card-value" id="profile-referee-name">-</div>
+            </div>
+            <div class="profile-card">
+              <div class="profile-card-title">Referee Phone</div>
+              <div class="profile-card-value" id="profile-referee-phone">-</div>
+            </div>
+            <div class="profile-card">
+              <div class="profile-card-title">Relationship</div>
+              <div class="profile-card-value" id="profile-referee-relationship">-</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Resume Upload Section -->
+        <div class="profile-section">
+          <div class="profile-section-title">📄 Resume</div>
+          <div class="resume-file-info hidden" id="resume-file-info">
+            <div class="file-icon">📄</div>
+            <div class="file-details">
+              <div class="file-name" id="resume-file-name">resume.pdf</div>
+              <div class="file-size" id="resume-file-size">0 KB</div>
+            </div>
+            <button class="remove-file-btn" onclick="removeResume()">Remove</button>
+          </div>
+          <div class="resume-upload-area" onclick="document.getElementById('resume-input').click()">
+            <div class="upload-icon">📤</div>
+            <div class="upload-text">Upload Your Resume</div>
+            <div class="upload-subtext">Click to select or drag and drop (PDF, DOC, DOCX)</div>
+            <input type="file" id="resume-input" accept=".pdf,.doc,.docx" onchange="handleResumeUpload(event)">
+          </div>
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="action-buttons">
+          <button class="btn-logout" onclick="logout()">🚪 Logout</button>
         </div>
       </div>
     </div>
+  </div>
 
-    <!-- JOBS TAB -->
-    <div id="tab-jobs" class="tab-view">
-      <h2>Jobs Board</h2>
-      
-      <div class="jobs-header">
-        <div class="search-bar">
-          <input type="text" id="job-search-input" placeholder="Search for jobs by title...">
-          <button id="job-search-btn">Search</button>
-        </div>
+  <!-- POST CREATION MODAL -->
+  <div class="modal-overlay" id="post-modal-overlay" onclick="closePostModal(event)">
+    <div class="modal-content" onclick="event.stopPropagation()">
+      <div class="modal-header">
+        <h3>Create a Post</h3>
+        <button class="modal-close" onclick="closePostModal()">✕</button>
       </div>
-
-      <div class="section-title">All Available Positions</div>
-      <ul class="job-list" id="jobs-list">
-        <li><div class="empty-state"><div class="empty-state-icon">💼</div><p>Loading jobs...</p></div></li>
-      </ul>
-    </div>
-
-    <!-- PROVIDER TAB -->
-    <div id="tab-provider" class="tab-view">
-      <h2>Find Service Providers</h2>
-      
-      <div class="provider-search">
-        <input type="text" id="provider-search-input" placeholder="Search by skill (e.g., Electrician, Plumber)...">
-        <button id="provider-search-btn">Search</button>
-      </div>
-
-      <div class="provider-grid" id="provider-grid">
-        <div class="empty-state">
-          <div class="empty-state-icon">🔍</div>
-          <p>Search for service providers by their skill...</p>
-        </div>
-      </div>
-    </div>
-
-    <!-- PROFILE TAB -->
-    <div id="tab-profile" class="tab-view">
-      <h2>My Profile</h2>
-      
-      <!-- Profile Header with Avatar -->
-      <div class="profile-header">
-        <div class="profile-avatar" id="profile-avatar">👤</div>
-        <div class="profile-name" id="profile-name">-</div>
-        <div class="profile-email" id="profile-email">-</div>
-        <div class="profile-field" id="profile-field">-</div>
-      </div>
-
-      <!-- Main Profile Info Grid -->
-      <div class="profile-grid">
-        <div class="profile-card">
-          <div class="profile-card-title">Email</div>
-          <div class="profile-card-value" id="profile-email-card">-</div>
-        </div>
-        <div class="profile-card">
-          <div class="profile-card-title">Phone</div>
-          <div class="profile-card-value" id="profile-phone">-</div>
-        </div>
-        <div class="profile-card">
-          <div class="profile-card-title">Date of Birth</div>
-          <div class="profile-card-value" id="profile-dob">-</div>
-        </div>
-        <div class="profile-card">
-          <div class="profile-card-title">Gender</div>
-          <div class="profile-card-value" id="profile-gender">-</div>
-        </div>
-        <div class="profile-card">
-          <div class="profile-card-title">Marital Status</div>
-          <div class="profile-card-value" id="profile-marital">-</div>
-        </div>
-        <div class="profile-card">
-          <div class="profile-card-title">Experience</div>
-          <div class="profile-card-value" id="profile-exp">-</div>
-        </div>
-      </div>
-
-      <!-- Location Information Section -->
-      <div class="profile-section">
-        <div class="profile-section-title">📍 Location Information</div>
-        <div class="profile-grid">
-          <div class="profile-card">
-            <div class="profile-card-title">State</div>
-            <div class="profile-card-value" id="profile-state">-</div>
-          </div>
-          <div class="profile-card">
-            <div class="profile-card-title">LGA</div>
-            <div class="profile-card-value" id="profile-lga">-</div>
-          </div>
-          <div class="profile-card">
-            <div class="profile-card-title">Hometown</div>
-            <div class="profile-card-value" id="profile-hometown">-</div>
-          </div>
-          <div class="profile-card">
-            <div class="profile-card-title">Current Address</div>
-            <div class="profile-card-value" id="profile-current">-</div>
-          </div>
-          <div class="profile-card">
-            <div class="profile-card-title">Permanent Address</div>
-            <div class="profile-card-value" id="profile-perm">-</div>
+      <div class="modal-body">
+        <div class="post-creator-wrapper">
+          <div class="post-creator-avatar" id="modal-avatar">U</div>
+          <div class="post-creator-input-area">
+            <textarea class="post-creator-input" id="post-content" placeholder="Share your thoughts, updates, or opportunities with the community..."></textarea>
           </div>
         </div>
       </div>
-
-      <!-- Career Information Section -->
-      <div class="profile-section">
-        <div class="profile-section-title">💼 Career Information</div>
-        <div class="profile-grid">
-          <div class="profile-card">
-            <div class="profile-card-title">Professional Field</div>
-            <div class="profile-card-value" id="profile-field-card">-</div>
-          </div>
-          <div class="profile-card">
-            <div class="profile-card-title">Area of Interest</div>
-            <div class="profile-card-value" id="profile-interest">-</div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Verification Section -->
-      <div class="profile-section">
-        <div class="profile-section-title">🆔 Verification Details</div>
-        <div class="profile-grid">
-          <div class="profile-card">
-            <div class="profile-card-title">ID Type</div>
-            <div class="profile-card-value" id="profile-id-type">-</div>
-          </div>
-          <div class="profile-card">
-            <div class="profile-card-title">ID Number</div>
-            <div class="profile-card-value" id="profile-id-number">-</div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Referee Section -->
-      <div class="profile-section">
-        <div class="profile-section-title">👥 Professional Reference</div>
-        <div class="profile-grid">
-          <div class="profile-card">
-            <div class="profile-card-title">Referee Name</div>
-            <div class="profile-card-value" id="profile-referee-name">-</div>
-          </div>
-          <div class="profile-card">
-            <div class="profile-card-title">Referee Phone</div>
-            <div class="profile-card-value" id="profile-referee-phone">-</div>
-          </div>
-          <div class="profile-card">
-            <div class="profile-card-title">Relationship</div>
-            <div class="profile-card-value" id="profile-referee-relationship">-</div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Resume Upload Section -->
-      <div class="profile-section">
-        <div class="profile-section-title">📄 Resume</div>
-        <div class="resume-file-info hidden" id="resume-file-info">
-          <div class="file-icon">📄</div>
-          <div class="file-details">
-            <div class="file-name" id="resume-file-name">resume.pdf</div>
-            <div class="file-size" id="resume-file-size">0 KB</div>
-          </div>
-          <button class="remove-file-btn" onclick="removeResume()">Remove</button>
-        </div>
-        <div class="resume-upload-area" onclick="document.getElementById('resume-input').click()">
-          <div class="upload-icon">📤</div>
-          <div class="upload-text">Upload Your Resume</div>
-          <div class="upload-subtext">Click to select or drag and drop (PDF, DOC, DOCX)</div>
-          <input type="file" id="resume-input" accept=".pdf,.doc,.docx" onchange="handleResumeUpload(event)">
-        </div>
-      </div>
-
-      <!-- Action Buttons -->
-      <div class="action-buttons">
-        <button class="btn-logout" onclick="logout()">🚪 Logout</button>
+      <div class="modal-footer">
+        <button class="btn-cancel" onclick="closePostModal()">Cancel</button>
+        <button class="btn-post" onclick="createPost()">Post</button>
       </div>
     </div>
   </div>
@@ -224,9 +262,13 @@
       <svg viewBox="0 0 24 24"><path d="M4 7V6a4 4 0 0 1 4-4h8a4 4 0 0 1 4 4v1"/><rect x="3" y="7" width="18" height="14" rx="2"/><path d="M16 21v-4a4 4 0 0 0-8 0v4"/></svg>
       Jobs
     </button>
+    <button class="nav-btn" id="post-create-btn" aria-label="Create Post">
+      <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 8v8M8 12h8"/></svg>
+      Post
+    </button>
     <button class="nav-btn" data-tab="provider" aria-label="Provider">
       <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 3c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3zm0 14.2c-2.5 0-4.71-1.28-6-3.22.03-1.99 4-3.08 6-3.08 1.99 0 5.97 1.09 6 3.08-1.29 1.94-3.5 3.22-6 3.22z"/></svg>
-      Provider
+      Network
     </button>
     <button class="nav-btn" data-tab="profile" aria-label="Profile">
       <svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M21,21C21,16.58,16.42,13,12,13s-9,3.58-9,8"/></svg>
@@ -241,21 +283,39 @@
     const supabaseKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBya3Z0eHFodXZmYmVrYXBlbHRtIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzcyMDYzMzQsImV4cCI6MjA5Mjc4MjMzNH0.C5e7kPILz52eIQCuwwcg6cNLhA-hqyqRVmit5HR-0J0";
     const supabaseClient = window.supabase.createClient(supabaseUrl, supabaseKey);
     
-    // Auth check and profile fetch
     let userProfile = {};
+    let allSkills = new Set();
+
+    // Modal Functions
+    function openPostModal() {
+      document.getElementById('post-modal-overlay').classList.add('active');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closePostModal(e) {
+      if (e && e.target !== document.getElementById('post-modal-overlay')) return;
+      document.getElementById('post-modal-overlay').classList.remove('active');
+      document.getElementById('post-content').value = '';
+      document.body.style.overflow = 'auto';
+    }
+
+    // Post Creation Button
+    document.getElementById('post-create-btn').addEventListener('click', openPostModal);
+
+    // Auth check and profile fetch
     async function fetchProfile() {
       let { data: { user } } = await supabaseClient.auth.getUser();
       if (!user) {
         const localProf = JSON.parse(localStorage.getItem('ogonijobhub_profile') || '{}');
         if (localProf && localProf.email) {
-          const { data: rows, error } = await supabaseClient.from('users').select('*').eq('email', localProf.email).limit(1);
+          const { data: rows } = await supabaseClient.from('users').select('*').eq('email', localProf.email).limit(1);
           if (rows && rows.length) userProfile = rows[0];
           else userProfile = localProf;
         } else {
           window.location='login.html';
         }
       } else {
-        let { data: udata, error } = await supabaseClient.from('users').select('*').eq('user_id', user.id).single();
+        let { data: udata } = await supabaseClient.from('users').select('*').eq('user_id', user.id).single();
         if (!udata) {
           ({ data: udata } = await supabaseClient.from('users').select('*').eq('email', user.email).single());
         }
@@ -263,19 +323,28 @@
         localStorage.setItem('ogonijobhub_profile', JSON.stringify(userProfile));
       }
       fillProfile(userProfile);
-      initializePostAvatar();
+      initializeAvatars();
+      loadProviderSkills();
     }
 
-    function fillProfile(profile){
-      const initials = (profile.full_name || 'U')
+    function getInitials(name) {
+      return (name || 'U')
         .split(' ')
         .map(n => n[0])
         .join('')
         .toUpperCase()
         .slice(0, 2);
-      
-      document.getElementById('profile-avatar').textContent = initials || '👤';
+    }
 
+    function initializeAvatars() {
+      const initials = getInitials(userProfile.full_name);
+      document.getElementById('user-avatar-mini').textContent = initials;
+      document.getElementById('modal-avatar').textContent = initials;
+      document.getElementById('profile-avatar').textContent = initials;
+    }
+
+    function fillProfile(profile){
+      const initials = getInitials(profile.full_name);
       document.getElementById('profile-name').textContent = profile.full_name || '-';
       document.getElementById('profile-email').textContent = profile.email || '-';
       document.getElementById('profile-email-card').textContent = profile.email || '-';
@@ -299,15 +368,47 @@
       document.getElementById('profile-referee-relationship').textContent = profile.referee_relationship || '-';
     }
 
-    function initializePostAvatar() {
-      const initials = (userProfile.full_name || 'U')
-        .split(' ')
-        .map(n => n[0])
-        .join('')
-        .toUpperCase()
-        .slice(0, 2);
-      document.getElementById('create-post-avatar').textContent = initials;
+    // Load all unique provider skills for filter dropdown
+    async function loadProviderSkills() {
+      try {
+        const { data: users } = await supabaseClient.from('users').select('field');
+        
+        if (users) {
+          users.forEach(user => {
+            if (user.field) {
+              allSkills.add(user.field);
+            }
+          });
+        }
+
+        populateSkillFilter();
+      } catch (err) {
+        console.error('Error loading provider skills:', err);
+      }
     }
+
+    function populateSkillFilter() {
+      const dropdown = document.getElementById('skill-filter');
+      const sortedSkills = Array.from(allSkills).sort();
+
+      sortedSkills.forEach(skill => {
+        const option = document.createElement('option');
+        option.value = skill;
+        option.textContent = skill;
+        dropdown.appendChild(option);
+      });
+    }
+
+    // Filter providers by selected skill
+    window.filterProvidersBySkill = function() {
+      const skill = document.getElementById('skill-filter').value;
+      if (skill) {
+        fetchProviders(skill);
+      } else {
+        const gridEl = document.getElementById('provider-grid');
+        gridEl.innerHTML = '<div class="empty-state"><div class="empty-state-icon">🔍</div><p>Select a skill or search to view providers...</p></div>';
+      }
+    };
 
     // Posts functionality
     async function createPost() {
@@ -327,15 +428,11 @@
 
         if (error) throw error;
 
-        document.getElementById('post-content').value = '';
+        closePostModal();
         fetchPosts();
       } catch (err) {
         alert('Failed to create post: ' + err.message);
       }
-    }
-
-    function clearPost() {
-      document.getElementById('post-content').value = '';
     }
 
     async function fetchPosts() {
@@ -356,7 +453,7 @@
 
         feedEl.innerHTML = posts.map(post => {
           const date = new Date(post.created_at).toLocaleDateString();
-          const initials = (post.author_name || 'U').split(' ').map(n => n[0]).join('').toUpperCase().slice(0, 2);
+          const initials = getInitials(post.author_name);
           return `
             <div class="post-card">
               <div class="post-header">
@@ -450,7 +547,7 @@
         }
 
         gridEl.innerHTML = providers.map(provider => {
-          const initials = (provider.full_name || 'U').split(' ').map(n => n[0]).join('').toUpperCase().slice(0, 2);
+          const initials = getInitials(provider.full_name);
           const rating = provider.rating || 0;
           const stars = '⭐'.repeat(Math.floor(rating));
           return `
@@ -507,13 +604,15 @@
 
     // Navbar
     document.querySelectorAll('.nav-btn').forEach(btn => {
-      btn.addEventListener('click', function () {
-        document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
-        btn.classList.add('active');
-        let tab = btn.getAttribute('data-tab');
-        document.querySelectorAll('.tab-view').forEach(t => t.classList.remove('active'));
-        document.getElementById('tab-' + tab).classList.add('active');
-      });
+      if (btn.id !== 'post-create-btn') {
+        btn.addEventListener('click', function () {
+          document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+          btn.classList.add('active');
+          let tab = btn.getAttribute('data-tab');
+          document.querySelectorAll('.tab-view').forEach(t => t.classList.remove('active'));
+          document.getElementById('tab-' + tab).classList.add('active');
+        });
+      }
     });
 
     // Job search
@@ -540,7 +639,6 @@
       localStorage.removeItem('ogonijobhub_profile');
       window.location = 'login.html';
     }
-    window.logout = logout;
 
     // --- On page load
     fetchProfile();
