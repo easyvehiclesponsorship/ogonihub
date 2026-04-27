@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Create Account | Nexcent</title>
+    <title>Create Account | OGONI HR HUB</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@500;700&family=Roboto:wght@400;500&display=swap" rel="stylesheet">
     <style>
 :root {
@@ -73,13 +73,13 @@ input:focus, select:focus, textarea:focus {
     outline: none; border-color: var(--primary-green);
 }
 .tab { display: none;}
-.wizard-buttons { display: flex; justify-content: space-between; margin-top: 30px;}
-#nextBtn {
+.wizard-buttons { display: flex; justify-content: space-between; margin-top: 30px; gap: 10px;}
+#nextBtn, .skip-btn {
     background-color: var(--primary-green); color: white;
     border: none; padding: 12px 24px; border-radius: 6px; cursor: pointer; font-weight: 600;
     transition: background 0.18s;
 }
-#prevBtn {
+#prevBtn, .skip-btn.secondary {
     background-color: transparent; color: var(--dark-grey); border: 1px solid var(--silver);
     padding: 12px 24px; border-radius: 6px; cursor: pointer;
 }
@@ -87,6 +87,85 @@ input:focus, select:focus, textarea:focus {
     background: #8ee395; cursor: not-allowed;
 }
 #nextBtn:hover:not(:disabled) { background-color: #388E3C;}
+.skip-btn:hover { background-color: #45a049;}
+.skip-btn.secondary:hover { background-color: #f0f0f0;}
+
+/* File Upload Styles */
+.file-upload-area {
+    border: 2px dashed var(--primary-green);
+    border-radius: 6px;
+    padding: 30px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.3s;
+    background: rgba(76, 175, 79, 0.02);
+}
+.file-upload-area:hover {
+    background: rgba(76, 175, 79, 0.05);
+    border-color: #388E3C;
+}
+.file-upload-area input[type="file"] {
+    display: none;
+}
+.upload-icon {
+    font-size: 2.5em;
+    margin-bottom: 10px;
+}
+.upload-text {
+    font-weight: 600;
+    color: var(--primary-green);
+    margin-bottom: 5px;
+}
+.upload-subtext {
+    font-size: 0.85em;
+    color: #888;
+}
+.file-preview {
+    background: rgba(76, 175, 79, 0.1);
+    padding: 12px 15px;
+    border-radius: 6px;
+    margin-top: 10px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+.file-preview.hidden {
+    display: none;
+}
+.file-icon {
+    font-size: 1.5em;
+}
+.file-info {
+    flex: 1;
+    text-align: left;
+}
+.file-name {
+    font-weight: 600;
+    color: var(--dark-grey);
+    font-size: 0.9em;
+}
+.file-size {
+    font-size: 0.8em;
+    color: #888;
+}
+.remove-file {
+    background: none;
+    border: none;
+    color: #b91010;
+    cursor: pointer;
+    font-size: 1.2em;
+    padding: 0;
+}
+
+/* Other Input */
+.other-input-group {
+    margin-top: 15px;
+    display: none;
+}
+.other-input-group.show {
+    display: block;
+}
+
 #loader-overlay {
     position: fixed; top: 0; left: 0; right: 0; bottom: 0;
     background: rgba(0,0,0,0.29); display: none; align-items: center; justify-content: center; z-index: 3000;
@@ -105,6 +184,8 @@ input:focus, select:focus, textarea:focus {
     .nav-links { flex-direction: column; gap: 0; width: 100%; margin-top: 8px;}
     .nav-links li { width: 100%;}
     .nav-links a { display: block; width: 100%; padding: 10px 0; text-align: left; font-size: 1.1em;}
+    .wizard-buttons { flex-direction: column;}
+    .wizard-buttons button { width: 100%;}
 }
     </style>
 </head>
@@ -115,8 +196,8 @@ input:focus, select:focus, textarea:focus {
     <div class="container">
         <header>
             <a href="index.html" class="logo">
-                <img src="hero-illustration.png" alt="Logo Icon" class="logo-icon">
-                OGONI JOB HUB
+                <img src="https://images.unsplash.com/vector-1739887191008-d6df8d48b1a9?q=80&w=100" alt="Logo Icon" class="logo-icon">
+                OGONI HR HUB
             </a>
             <nav>
                 <ul class="nav-links">
@@ -133,6 +214,8 @@ input:focus, select:focus, textarea:focus {
                     <div class="circle">2</div>
                     <div class="circle">3</div>
                     <div class="circle">4</div>
+                    <div class="circle">5</div>
+                    <div class="circle">6</div>
                 </div>
                 <form id="regForm" autocomplete="off" novalidate>
                     <!-- TAB 0: Account Auth Info -->
@@ -156,6 +239,7 @@ input:focus, select:focus, textarea:focus {
                             <input type="password" name="signup_password2" placeholder="Retype password" autocomplete="new-password" minlength="6" required>
                         </div>
                     </div>
+
                     <!-- TAB 1: Personal Details -->
                     <div class="tab">
                         <h2 class="step-title">Personal Details</h2>
@@ -169,22 +253,23 @@ input:focus, select:focus, textarea:focus {
                                 <label>Gender</label>
                                 <select name="gender" required>
                                     <option value="">Select</option>
-                                    <option value="male">Male</option>
-                                    <option value="female">Female</option>
-                                    <option value="other">Other</option>
+                                    <option value="Male">Male</option>
+                                    <option value="Female">Female</option>
+                                    <option value="Other">Other</option>
                                 </select>
                             </div>
                             <div class="input-group">
                                 <label>Marital Status</label>
                                 <select name="marital" required>
                                     <option value="">Select</option>
-                                    <option value="single">Single</option>
-                                    <option value="married">Married</option>
-                                    <option value="divorced">Divorced</option>
+                                    <option value="Single">Single</option>
+                                    <option value="Married">Married</option>
+                                    <option value="Divorced">Divorced</option>
                                 </select>
                             </div>
                         </div>
                     </div>
+
                     <!-- TAB 2: Location -->
                     <div class="tab">
                         <h2 class="step-title">Location Details</h2>
@@ -193,7 +278,7 @@ input:focus, select:focus, textarea:focus {
                             <div class="input-group">
                                 <label>State</label>
                                 <select id="state-select" name="state" required>
-                                    <option value="Rivers">Rivers State</option>
+                                    <option value="Rivers State">Rivers State</option>
                                 </select>
                             </div>
                             <div class="input-group">
@@ -220,7 +305,8 @@ input:focus, select:focus, textarea:focus {
                             <input type="text" name="perm_addr" required>
                         </div>
                     </div>
-                    <!-- TAB 3: Professional -->
+
+                    <!-- TAB 3: Professional Details -->
                     <div class="tab">
                         <h2 class="step-title">Professional Profile</h2>
                         <p class="step-subtitle">Help us match you with opportunities</p>
@@ -229,31 +315,126 @@ input:focus, select:focus, textarea:focus {
                             <input type="tel" name="phone" placeholder="+234..." required pattern="^\+?\d{10,13}$">
                         </div>
                         <div class="input-group">
-                            <label>Field of Work</label>
-                            <input type="text" name="field" placeholder="e.g. Software Engineering, Marketing" required>
+                            <label>Primary Skill / Trade</label>
+                            <select name="skill" id="skill-select" required onchange="handleSkillChange()">
+                                <option value="">Select your primary skill</option>
+                                <option value="Electrician">Electrician</option>
+                                <option value="Plumber">Plumber</option>
+                                <option value="Carpenter">Carpenter</option>
+                                <option value="Software Developer">Software Developer</option>
+                                <option value="Painter">Painter</option>
+                                <option value="Welder">Welder</option>
+                                <option value="Solar Installer">Solar Installer</option>
+                                <option value="Mechanic">Mechanic</option>
+                                <option value="Mason">Mason</option>
+                                <option value="Fashion Designer">Fashion Designer</option>
+                                <option value="Chef">Chef</option>
+                                <option value="Accountant">Accountant</option>
+                                <option value="Teacher">Teacher</option>
+                                <option value="Nurse">Nurse</option>
+                                <option value="Driver">Driver</option>
+                                <option value="Other">Other (Please specify)</option>
+                            </select>
+                        </div>
+                        <div class="other-input-group" id="other-skill-group">
+                            <input type="text" name="skill_other" id="skill-other" placeholder="Please specify your skill" />
                         </div>
                         <div class="input-group">
-                            <label>Working Experience (Years)</label>
+                            <label>Years of Experience</label>
                             <input type="number" name="experience" placeholder="e.g. 5" min="0" required>
                         </div>
                         <div class="input-group">
-                            <label>Areas of Interest</label>
-                            <textarea name="interest" rows="3" required></textarea>
+                            <label>Additional Areas of Interest</label>
+                            <textarea name="interest" rows="3" placeholder="Describe any additional skills or areas you're interested in..."></textarea>
                         </div>
                     </div>
+
+                    <!-- TAB 4: Verification Details -->
+                    <div class="tab">
+                        <h2 class="step-title">Verification & ID</h2>
+                        <p class="step-subtitle">Help us verify your identity</p>
+                        <div class="input-group">
+                            <label>Type of ID Document</label>
+                            <select name="id_type" required>
+                                <option value="">Select ID type</option>
+                                <option value="NIN">National ID (NIN)</option>
+                                <option value="Drivers License">Driver's License</option>
+                                <option value="Voters Card">Voter's Card</option>
+                                <option value="International Passport">International Passport</option>
+                            </select>
+                        </div>
+                        <div class="input-group">
+                            <label>ID Number</label>
+                            <input type="text" name="id_number" placeholder="Enter your ID number" required>
+                        </div>
+                    </div>
+
+                    <!-- TAB 5: Referee Details -->
+                    <div class="tab">
+                        <h2 class="step-title">Professional Reference</h2>
+                        <p class="step-subtitle">Provide one referee who can vouch for you</p>
+                        <div class="input-group">
+                            <label>Referee's Full Name</label>
+                            <input type="text" name="referee_name" placeholder="Enter referee's full name" required>
+                        </div>
+                        <div class="input-group">
+                            <label>Referee's Phone Number</label>
+                            <input type="tel" name="referee_phone" placeholder="+234..." pattern="^\+?\d{10,13}$" required>
+                        </div>
+                        <div class="input-group">
+                            <label>Referee's Email (Optional)</label>
+                            <input type="email" name="referee_email" placeholder="Referee's email address">
+                        </div>
+                        <div class="input-group">
+                            <label>Relationship to Referee</label>
+                            <select name="referee_relationship" required>
+                                <option value="">Select relationship</option>
+                                <option value="Former Employer">Former Employer</option>
+                                <option value="Current Employer">Current Employer</option>
+                                <option value="Colleague">Colleague</option>
+                                <option value="Professional Associate">Professional Associate</option>
+                                <option value="Client">Client</option>
+                                <option value="Other">Other</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- TAB 6: CV Upload -->
+                    <div class="tab">
+                        <h2 class="step-title">Upload Your CV</h2>
+                        <p class="step-subtitle">Share your resume (optional - you can add it later)</p>
+                        <div class="input-group">
+                            <label>CV / Resume Upload</label>
+                            <div class="file-upload-area" onclick="document.getElementById('cv-input').click()">
+                                <div class="upload-icon">📄</div>
+                                <div class="upload-text">Click to upload CV</div>
+                                <div class="upload-subtext">PDF, DOC, or DOCX (Max 5MB)</div>
+                                <input type="file" id="cv-input" name="cv_file" accept=".pdf,.doc,.docx">
+                            </div>
+                            <div class="file-preview hidden" id="cv-preview">
+                                <div class="file-icon">📄</div>
+                                <div class="file-info">
+                                    <div class="file-name" id="cv-name">document.pdf</div>
+                                    <div class="file-size" id="cv-size">0 KB</div>
+                                </div>
+                                <button type="button" class="remove-file" onclick="removeCVFile(event)">✕</button>
+                            </div>
+                        </div>
+                    </div>
+
                     <div class="wizard-buttons">
                         <button type="button" id="prevBtn" onclick="nextPrev(-1)">Previous</button>
                         <button type="button" id="nextBtn" onclick="nextPrev(1)">Next Step</button>
+                        <button type="button" class="skip-btn secondary" id="skipBtn" onclick="skipCV()" style="display:none;">Skip for Now</button>
                     </div>
                 </form>
                 <div id="form-error-msg" style="color: #b91010; margin-top: 18px; min-height: 24px; text-align:center; font-size: 0.98em;"></div>
             </div>
         </main>
     </div>
+
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-   <!-- ... your HTML/CSS above ... -->
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script>
+    <script>
 document.addEventListener("DOMContentLoaded", function() {
     // --- Supabase config ---
     const supabaseUrl = "https://prkvtxqhuvfbekapeltm.supabase.co";    
@@ -266,7 +447,50 @@ document.addEventListener("DOMContentLoaded", function() {
     function hideLoader() { loader.style.display = "none"; }
 
     let currentTab = 0;
+    let cvFile = null;
     showTab(currentTab);
+
+    // Handle skill change
+    window.handleSkillChange = function() {
+        const skillSelect = document.getElementById('skill-select');
+        const otherSkillGroup = document.getElementById('other-skill-group');
+        if (skillSelect.value === 'Other') {
+            otherSkillGroup.classList.add('show');
+            document.getElementById('skill-other').required = true;
+        } else {
+            otherSkillGroup.classList.remove('show');
+            document.getElementById('skill-other').required = false;
+        }
+    };
+
+    // Handle CV file upload
+    document.getElementById('cv-input').addEventListener('change', function(e) {
+        const file = e.target.files[0];
+        if (!file) return;
+
+        const maxSize = 5 * 1024 * 1024;
+        if (file.size > maxSize) {
+            alert('File must be less than 5MB');
+            return;
+        }
+
+        cvFile = file;
+        document.getElementById('cv-name').textContent = file.name;
+        document.getElementById('cv-size').textContent = (file.size / 1024).toFixed(2) + ' KB';
+        document.getElementById('cv-preview').classList.remove('hidden');
+    });
+
+    window.removeCVFile = function(e) {
+        e.preventDefault();
+        cvFile = null;
+        document.getElementById('cv-input').value = '';
+        document.getElementById('cv-preview').classList.add('hidden');
+    };
+
+    window.skipCV = function() {
+        cvFile = null;
+        submitToSupabase();
+    };
 
     function showTab(n) {
         let tabs = document.getElementsByClassName("tab");
@@ -274,8 +498,18 @@ document.addEventListener("DOMContentLoaded", function() {
             tabs[i].style.display = "none";
         tabs[n].style.display = "block";
         document.getElementById("prevBtn").style.visibility = n === 0 ? "hidden" : "visible";
-        document.getElementById("nextBtn").innerHTML =
-            (n === tabs.length - 1) ? "Submit Registration" : "Next Step →";
+        
+        const skipBtn = document.getElementById("skipBtn");
+        const nextBtn = document.getElementById("nextBtn");
+        
+        if (n === tabs.length - 1) {
+            nextBtn.innerHTML = "Complete Registration";
+            skipBtn.style.display = "inline-block";
+        } else {
+            nextBtn.innerHTML = "Next Step →";
+            skipBtn.style.display = "none";
+        }
+        
         updateProgress(n);
         document.getElementById("form-error-msg").textContent = "";
     }
@@ -311,6 +545,42 @@ document.addEventListener("DOMContentLoaded", function() {
                 errMsg = "Passwords do not match.";
                 if (!firstInvalid) firstInvalid = pw2;
             }
+        } else if (currentTab === 3) {
+            // Professional details validation
+            const skill = document.querySelector('select[name="skill"]');
+            const skillOther = document.getElementById('skill-other');
+            
+            skill.style.borderColor = '';
+            if (!skill.value) {
+                skill.style.borderColor = '#b91010';
+                valid = false;
+                errMsg = "Please select your primary skill.";
+                if (!firstInvalid) firstInvalid = skill;
+            }
+            
+            if (skill.value === 'Other' && !skillOther.value.trim()) {
+                skillOther.style.borderColor = '#b91010';
+                valid = false;
+                errMsg = "Please specify your skill.";
+                if (!firstInvalid) firstInvalid = skillOther;
+            }
+
+            // Validate other fields
+            for (let i = 0; i < inputs.length; i++) {
+                let el = inputs[i];
+                el.style.borderColor = '';
+                if (el.hasAttribute('required') && !el.value.trim() && el.name !== 'skill_other') {
+                    el.style.borderColor = '#b91010';
+                    if (!firstInvalid) firstInvalid = el;
+                    valid = false;
+                }
+                if (el.type === "tel" && el.value && !/^\+?\d{10,13}$/.test(el.value)) {
+                    el.style.borderColor = '#b91010';
+                    errMsg = "Phone: 10-13 digits, can start with +";
+                    if (!firstInvalid) firstInvalid = el;
+                    valid = false;
+                }
+            }
         } else {
             for (let i = 0; i < inputs.length; i++) {
                 let el = inputs[i];
@@ -320,7 +590,7 @@ document.addEventListener("DOMContentLoaded", function() {
                     if (!firstInvalid) firstInvalid = el;
                     valid = false;
                 }
-                if (currentTab === 3 && el.type === "tel" && el.value && !/^\+?\d{10,13}$/.test(el.value)) {
+                if (el.type === "tel" && el.value && !/^\+?\d{10,13}$/.test(el.value)) {
                     el.style.borderColor = '#b91010';
                     errMsg = "Phone: 10-13 digits, can start with +";
                     if (!firstInvalid) firstInvalid = el;
@@ -328,6 +598,7 @@ document.addEventListener("DOMContentLoaded", function() {
                 }
             }
         }
+
         if (firstInvalid) firstInvalid.focus();
         if (!valid) {
             document.getElementById("form-error-msg").textContent = errMsg || "Please fill all required fields correctly.";
@@ -358,47 +629,83 @@ document.addEventListener("DOMContentLoaded", function() {
         const name = form.signup_name.value.trim();
         const email = form.signup_email.value.trim();
         const password = form.signup_password.value;
+        
+        const skill = form.skill.value;
+        const skillValue = skill === 'Other' ? form.skill_other.value : skill;
+
         const data = {
             full_name: name,
             email: email,
             dob: form.dob.value,
             gender: form.gender.value,
             marital: form.marital.value,
-            state: form.state ? form.state.value.trim() : (document.getElementById("state-select").value.trim() || ""),
+            state: form.state.value.trim() || document.getElementById("state-select").value.trim(),
             lga: form.lga.value,
             hometown: form.hometown.value,
             current_addr: form.current_addr.value,
             perm_addr: form.perm_addr.value,
             phone: form.phone.value,
-            field: form.field.value,
+            field: skillValue,
             experience: parseInt(form.experience.value) || 0,
             interest: form.interest.value.trim(),
+            id_type: form.id_type.value,
+            id_number: form.id_number.value,
+            referee_name: form.referee_name.value,
+            referee_phone: form.referee_phone.value,
+            referee_email: form.referee_email.value || null,
+            referee_relationship: form.referee_relationship.value,
+            cv_url: null,
         };
 
         try {
-            // 1. Signup user with Supabase Auth (auto-login, no email verification)!
+            // 1. Signup user with Supabase Auth
             const { data:user, error:authErr } = await supabaseClient.auth.signUp({
                 email: email,
                 password: password,
                 options: { emailRedirectTo: undefined, data: { full_name: name } }
             });
             if (authErr) throw authErr;
-            // 2. Save profile data in 'users' table (must exist!)
-            const userId = (user.user?.id) ? user.user.id : (user.id ? user.id : null);
+
+            const userId = user.user?.id || user.id;
+
+            // 2. Upload CV if provided
+            if (cvFile) {
+                try {
+                    const cvPath = `${userId}/cv_${Date.now()}`;
+                    const { error: cvError } = await supabaseClient.storage
+                        .from('documents')
+                        .upload(cvPath, cvFile);
+
+                    if (!cvError) {
+                        const { data: urlData } = supabaseClient.storage
+                            .from('documents')
+                            .getPublicUrl(cvPath);
+                        data.cv_url = urlData.publicUrl;
+                    }
+                } catch (cvErr) {
+                    console.log('CV upload skipped');
+                }
+            }
+
+            // 3. Save profile data in 'users' table
             const profileRes = await supabaseClient
                 .from("users")
                 .insert([{ ...data, user_id: userId }]);
             if (profileRes.error) throw profileRes.error;
+
             hideLoader();
             // Save profile in localStorage for dashboard
             localStorage.setItem('ogonijobhub_profile', JSON.stringify({...data, user_id: userId }));
-            // 3. Redirect directly to dashboard
-            window.location.href = "dashboard.html";
+            
+            // 4. Redirect to login
+            alert('Registration successful! Please log in with your credentials.');
+            window.location.href = "login.html";
         } catch (err) {
             hideLoader();
             nextBtn.disabled = false; prevBtn.disabled = false;
             document.getElementById("form-error-msg").textContent =
                 "Registration failed: " + (err.message || err.error_description || err);
+            console.error(err);
         }
     }
 
@@ -412,6 +719,6 @@ document.addEventListener("DOMContentLoaded", function() {
         progress.style.width = (n / (circles.length - 1)) * 100 + "%";
     }
 });
-</script>
+    </script>
 </body>
 </html>
