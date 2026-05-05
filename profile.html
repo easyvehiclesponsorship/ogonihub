@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Professional Profile | OGONI HR HUB</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="dashboard.css">
+  <style>
+    .profile-page-container {
+      max-width: 1000px;
+      margin: 0 auto;
+      padding: 20px;
+      padding-bottom: 100px;
+    }
+
+    .profile-header-section {
+      background: white;
+      border-radius: 12px;
+      padding: 30px;
+      margin-bottom: 20px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+      display: flex;
+      gap: 30px;
+      align-items: flex-start;
+    }
+
+    .profile-avatar-large {
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      font-size: 48px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      font-weight: 700;
+    }
+
+    .profile-header-info {
+      flex: 1;
+    }
+
+    .profile-header-info h1 {
+      margin: 0 0 10px 0;
+      font-size: 1.8em;
+      color: #333;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .verified-badge-large {
+      background: #4CAF4F;
+      color: white;
+      border-radius: 50%;
+      width: 28px;
+      height: 28px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 16px;
+      font-weight: bold;
+    }
+
+    .profile-skill-tag {
+      background: #e8f5e9;
+      color: #2e7d32;
+      padding: 8px 16px;
+      border-radius: 20px;
+      display: inline-block;
+      margin-bottom: 15px;
+      font-weight: 500;
+    }
+
+    .profile-rating-large {
+      font-size: 1.2em;
+      margin-bottom: 15px;
+      color: #666;
+    }
+
+    .profile-contact-info {
+      display: flex;
+      gap: 20px;
+      flex-wrap: wrap;
+      margin-top: 15px;
+    }
+
+    .contact-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: #666;
+    }
+
+    .contact-item a {
+      color: #4CAF4F;
+      text-decoration: none;
+      font-weight: 500;
+    }
+
+    .profile-action-buttons {
+      display: flex;
+      gap: 10px;
+      margin-top: 20px;
+    }
+
+    .btn-contact, .btn-hire {
+      padding: 12px 24px;
+      border: none;
+      border-radius: 8px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+
+    .btn-contact {
+      background: #4CAF4F;
+      color: white;
+    }
+
+    .btn-contact:hover {
+      background: #388E3C;
+    }
+
+    .btn-hire {
+      background: white;
+      color: #4CAF4F;
+      border: 2px solid #4CAF4F;
+    }
+
+    .btn-hire:hover {
+      background: #f0f0f0;
+    }
+
+    .profile-section {
+      background: white;
+      border-radius: 12px;
+      padding: 25px;
+      margin-bottom: 20px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    }
+
+    .profile-section-title {
+      font-size: 1.3em;
+      font-weight: 600;
+      color: #333;
+      margin-bottom: 20px;
+      padding-bottom: 10px;
+      border-bottom: 2px solid #e0e0e0;
+    }
+
+    .section-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 20px;
+    }
+
+    .info-card {
+      padding: 15px;
+      background: #f5f7fa;
+      border-radius: 8px;
+    }
+
+    .info-label {
+      font-size: 0.85em;
+      color: #888;
+      font-weight: 500;
+      margin-bottom: 5px;
+    }
+
+    .info-value {
+      font-size: 1em;
+      color: #333;
+      font-weight: 500;
+    }
+
+    .back-button {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: #f5f7fa;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 8px;
+      cursor: pointer;
+      color: #333;
+      font-weight: 500;
+      margin-bottom: 20px;
+      transition: all 0.3s;
+    }
+
+    .back-button:hover {
+      background: #e0e0e0;
+    }
+
+    .loading-state {
+      text-align: center;
+      padding: 40px;
+      color: #888;
+    }
+
+    .spinner {
+      border: 4px solid #f3f3f3;
+      border-top: 4px solid #4CAF4F;
+      border-radius: 50%;
+      width: 40px;
+      height: 40px;
+      animation: spin 1s linear infinite;
+      margin: 0 auto 20px;
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+  </style>
+</head>
+<body>
+  <div class="profile-page-container">
+    <button class="back-button" onclick="window.history.back()">
+      ← Back
+    </button>
+
+    <div id="profile-content">
+      <div class="loading-state">
+        <div class="spinner"></div>
+        <p>Loading professional profile...</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bottom Navigation Bar -->
+  <nav class="bottom-nav">
+    <button class="nav-btn" data-page="home">
+      <svg viewBox="0 0 24 24" fill="currentColor">
+        <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/>
+      </svg>
+      <span>Home</span>
+    </button>
+    <button class="nav-btn" data-page="jobs">
+      <svg viewBox="0 0 24 24" fill="currentColor">
+        <path d="M4 7V6a4 4 0 0 1 4-4h8a4 4 0 0 1 4 4v1"/>
+        <rect x="3" y="7" width="18" height="14" rx="2"/>
+        <path d="M16 21v-4a4 4 0 0 0-8 0v4"/>
+      </svg>
+      <span>Jobs</span>
+    </button>
+    <button class="nav-btn" data-page="messages">
+      <svg viewBox="0 0 24 24" fill="currentColor">
+        <path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2z"/>
+      </svg>
+      <span>Messages</span>
+    </button>
+    <button class="nav-btn" data-page="profile">
+      <svg viewBox="0 0 24 24" fill="currentColor">
+        <circle cx="12" cy="8" r="4"/>
+        <path d="M12 14c-4.41 0-8 2.69-8 6v2h16v-2c0-3.31-3.59-6-8-6z"/>
+      </svg>
+      <span>Profile</span>
+    </button>
+  </nav>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="config.js"></script>
+  <script>
+    function getInitials(name) {
+      return (name || 'U')
+        .split(' ')
+        .map(n => n[0])
+        .join('')
+        .toUpperCase()
+        .slice(0, 2);
+    }
+
+    async function loadProfessionalProfile() {
+      const professionalId = localStorage.getItem('selectedProfessionalId');
+      const profileContent = document.getElementById('profile-content');
+
+      if (!professionalId) {
+        profileContent.innerHTML = `
+          <div class="loading-state">
+            <p>No professional selected. <a href="index.html">Go back home</a></p>
+          </div>
+        `;
+        return;
+      }
+
+      try {
+        const { data: professional, error } = await supabaseClient
+          .from('users')
+          .select('*')
+          .eq('id', professionalId)
+          .single();
+
+        if (error || !professional) {
+          profileContent.innerHTML = `
+            <div class="loading-state">
+              <p>Professional not found. <a href="index.html">Go back home</a></p>
+            </div>
+          `;
+          return;
+        }
+
+        const initials = getInitials(professional.full_name);
+        const rating = professional.rating || 0;
+        const reviewCount = professional.review_count || 0;
+        const ratingText = rating > 0 
+          ? `⭐ ${rating.toFixed(1)} (${reviewCount} reviews)` 
+          : 'New Professional';
+        const verifiedBadge = professional.verified 
+          ? `<div class="verified-badge-large">✓</div>` 
+          : '';
+
+        profileContent.innerHTML = `
+          <!-- Header Section -->
+          <div class="profile-header-section">
+            <div class="profile-avatar-large">${initials}</div>
+            <div class="profile-header-info">
+              <h1>
+                ${professional.full_name || 'Professional'}
+                ${verifiedBadge}
+              </h1>
+              <div class="profile-skill-tag">${professional.field || 'Service Provider'}</div>
+              <div class="profile-rating-large">${ratingText}</div>
+              <div class="profile-contact-info">
+                <div class="contact-item">
+                  📍 ${professional.state || professional.lga || 'Location not set'}
+                </div>
+                <div class="contact-item">
+                  ✨ ${professional.experience || 0} years experience
+                </div>
+              </div>
+              <div class="profile-contact-info">
+                <div class="contact-item">
+                  📞 <a href="tel:${professional.phone}">${professional.phone || 'Not provided'}</a>
+                </div>
+                <div class="contact-item">
+                  📧 <a href="mailto:${professional.email}">${professional.email || 'Not provided'}</a>
+                </div>
+              </div>
+              <div class="profile-action-buttons">
+                <button class="btn-contact" onclick="contactProfessional('${professional.phone}', '${professional.full_name}')">
+                  📞 Contact
+                </button>
+                <button class="btn-hire" onclick="hireProfessional('${professional.id}')">
+                  💼 Hire
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Personal Information -->
+          <div class="profile-section">
+            <div class="profile-section-title">👤 Personal Information</div>
+            <div class="section-grid">
+              <div class="info-card">
+                <div class="info-label">Full Name</div>
+                <div class="info-value">${professional.full_name || '-'}</div>
+              </div>
+              <div class="info-card">
+                <div class="info-label">Date of Birth</div>
+                <div class="info-value">${professional.dob || '-'}</div>
+              </div>
+              <div class="info-card">
+                <div class="info-label">Gender</div>
+                <div class="info-value">${professional.gender || '-'}</div>
+              </div>
+              <div class="info-card">
+                <div class="info-label">Marital Status</div>
+                <div class="info-value">${professional.marital || '-'}</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Location Information -->
+          <div class="profile-section">
+            <div class="profile-section-title">📍 Location Information</div>
+            <div class="section-grid">
+              <div class="info-card">
+                <div class="info-label">State</div>
+                <div class="info-value">${professional.state || '-'}</div>
+              </div>
+              <div class="info-card">
+                <div class="info-label">LGA</div>
+                <div class="info-value">${professional.lga || '-'}</div>
+              </div>
+              <div class="info-card">
+                <div class="info-label">Hometown</div>
+                <div class="info-value">${professional.hometown || '-'}</div>
+              </div>
+              <div class="info-card">
+                <div class="info-label">Current Address</div>
+                <div class="info-value">${professional.current_addr || '-'}</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Professional Information -->
+          <div class="profile-section">
+            <div class="profile-section-title">💼 Professional Information</div>
+            <div class="section-grid">
+              <div class="info-card">
+                <div class="info-label">Primary Skill</div>
+                <div class="info-value">${professional.field || '-'}</div>
+              </div>
+              <div class="info-card">
+                <div class="info-label">Years of Experience</div>
+                <div class="info-value">${professional.experience || 0} years</div>
+              </div>
+              <div class="info-card">
+                <div class="info-label">Phone</div>
+                <div class="info-value"><a href="tel:${professional.phone}" style="color: #4CAF4F; text-decoration: none;">${professional.phone || '-'}</a></div>
+              </div>
+            </div>
+            ${professional.interest ? `
+              <div class="info-card" style="margin-top: 15px; grid-column: 1 / -1;">
+                <div class="info-label">Areas of Interest</div>
+                <div class="info-value">${professional.interest}</div>
+              </div>
+            ` : ''}
+          </div>
+
+          <!-- Verification Information -->
+          <div class="profile-section">
+            <div class="profile-section-title">🆔 Verification Information</div>
+            <div class="section-grid">
+              <div class="info-card">
+                <div class="info-label">ID Type</div>
+                <div class="info-value">${professional.id_type || '-'}</div>
+              </div>
+              <div class="info-card">
+                <div class="info-label">Verification Status</div>
+                <div class="info-value" style="color: ${professional.verified ? '#4CAF4F' : '#ff9800'};">
+                  ${professional.verified ? '✓ Verified' : '⏳ Pending'}
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Professional Reference -->
+          <div class="profile-section">
+            <div class="profile-section-title">👥 Professional Reference</div>
+            <div class="section-grid">
+              <div class="info-card">
+                <div class="info-label">Referee Name</div>
+                <div class="info-value">${professional.referee_name || '-'}</div>
+              </div>
+              <div class="info-card">
+                <div class="info-label">Referee Phone</div>
+                <div class="info-value"><a href="tel:${professional.referee_phone}" style="color: #4CAF4F; text-decoration: none;">${professional.referee_phone || '-'}</a></div>
+              </div>
+              <div class="info-card">
+                <div class="info-label">Relationship</div>
+                <div class="info-value">${professional.referee_relationship || '-'}</div>
+              </div>
+            </div>
+          </div>
+        `;
+
+      } catch (error) {
+        console.error('Error loading professional:', error);
+        profileContent.innerHTML = `
+          <div class="loading-state">
+            <p>Error loading profile. <a href="index.html">Go back home</a></p>
+          </div>
+        `;
+      }
+    }
+
+    function contactProfessional(phone, name) {
+      window.location.href = `tel:${phone}`;
+    }
+
+    function hireProfessional(professionalId) {
+      alert(`Hire feature coming soon! You selected: ${professionalId}`);
+    }
+
+    // Bottom navigation
+    document.addEventListener('DOMContentLoaded', () => {
+      loadProfessionalProfile();
+
+      document.querySelectorAll('.nav-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const pages = {
+            'home': 'index.html',
+            'jobs': 'jobs.html',
+            'messages': 'messages.html',
+            'profile': 'profile.html'
+          };
+          const page = btn.getAttribute('data-page');
+          if (pages[page]) {
+            window.location.href = pages[page];
+          }
+        });
+      });
+    });
+  </script>
+</body>
+</html>

@@ -1,649 +1,406 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Dashboard | OGONI HR HUB</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="dashboard.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OGONI HR HUB</title>
+    <link rel="stylesheet" href="dashboard.css">
+    <!-- Font Awesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
-  <div class="main-wrapper">
-    <div class="main-content">
-      <!-- POSTS TAB -->
-      <div id="tab-posts" class="tab-view active">
-        <!-- Posts Top Bar with Search -->
-        <div class="posts-top-bar">
-          <div class="profile-avatar-mini" id="user-avatar-mini">U</div>
-          <div class="search-box">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <circle cx="11" cy="11" r="8"></circle>
-              <path d="m21 21-4.35-4.35"></path>
-            </svg>
-            <input type="text" placeholder="Search posts, people...">
-          </div>
-          <button class="posts-menu-btn">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-              <circle cx="12" cy="5" r="2"></circle>
-              <circle cx="12" cy="12" r="2"></circle>
-              <circle cx="12" cy="19" r="2"></circle>
-            </svg>
-          </button>
-        </div>
 
-        <!-- Posts Feed -->
-        <div class="posts-feed" id="posts-feed">
-          <div class="empty-state">
-            <div class="empty-state-icon">📝</div>
-            <p>No posts yet. Be the first to share something!</p>
-          </div>
-        </div>
-      </div>
-
-      <!-- JOBS TAB -->
-      <div id="tab-jobs" class="tab-view">
-        <div class="tab-header">
-          <h2>Jobs Board</h2>
-        </div>
-        
-        <div class="jobs-header">
-          <div class="search-bar">
-            <input type="text" id="job-search-input" placeholder="Search for jobs by title...">
-            <button id="job-search-btn">Search</button>
-          </div>
-        </div>
-
-        <div class="section-title">All Available Positions</div>
-        <ul class="job-list" id="jobs-list">
-          <li><div class="empty-state"><div class="empty-state-icon">💼</div><p>Loading jobs...</p></div></li>
-        </ul>
-      </div>
-
-      <!-- PROVIDER TAB -->
-      <div id="tab-provider" class="tab-view">
-        <div class="tab-header">
-          <h2>Find Service Providers</h2>
-        </div>
-        
-        <!-- Skills Filter Dropdown -->
-        <div class="provider-filters">
-          <select id="skill-filter" class="skill-dropdown" onchange="filterProvidersBySkill()">
-            <option value="">All Skills</option>
-          </select>
-        </div>
-
-        <div class="provider-search">
-          <input type="text" id="provider-search-input" placeholder="Search by name or skill...">
-          <button id="provider-search-btn">Search</button>
-        </div>
-
-        <div class="provider-grid" id="provider-grid">
-          <div class="empty-state">
-            <div class="empty-state-icon">🔍</div>
-            <p>Search for service providers by their skill...</p>
-          </div>
-        </div>
-      </div>
-
-      <!-- PROFILE TAB -->
-      <div id="tab-profile" class="tab-view">
-        <div class="tab-header">
-          <h2>My Profile</h2>
-        </div>
-        
-        <!-- Profile Header with Avatar -->
-        <div class="profile-header">
-          <div class="profile-avatar" id="profile-avatar">👤</div>
-          <div class="profile-name" id="profile-name">-</div>
-          <div class="profile-email" id="profile-email">-</div>
-          <div class="profile-field" id="profile-field">-</div>
-        </div>
-
-        <!-- Main Profile Info Grid -->
-        <div class="profile-grid">
-          <div class="profile-card">
-            <div class="profile-card-title">Email</div>
-            <div class="profile-card-value" id="profile-email-card">-</div>
-          </div>
-          <div class="profile-card">
-            <div class="profile-card-title">Phone</div>
-            <div class="profile-card-value" id="profile-phone">-</div>
-          </div>
-          <div class="profile-card">
-            <div class="profile-card-title">Date of Birth</div>
-            <div class="profile-card-value" id="profile-dob">-</div>
-          </div>
-          <div class="profile-card">
-            <div class="profile-card-title">Gender</div>
-            <div class="profile-card-value" id="profile-gender">-</div>
-          </div>
-          <div class="profile-card">
-            <div class="profile-card-title">Marital Status</div>
-            <div class="profile-card-value" id="profile-marital">-</div>
-          </div>
-          <div class="profile-card">
-            <div class="profile-card-title">Experience</div>
-            <div class="profile-card-value" id="profile-exp">-</div>
-          </div>
-        </div>
-
-        <!-- Location Information Section -->
-        <div class="profile-section">
-          <div class="profile-section-title">📍 Location Information</div>
-          <div class="profile-grid">
-            <div class="profile-card">
-              <div class="profile-card-title">State</div>
-              <div class="profile-card-value" id="profile-state">-</div>
+    <div class="app-container">
+        <!-- Header -->
+        <header class="header">
+            <div class="user-info">
+                <h1>Hi, <span id="user-name">John</span> 👋</h1>
+                <p><i class="fa-solid fa-location-dot"></i> <span id="user-location">Port Harcourt, Nigeria</span></p>
             </div>
-            <div class="profile-card">
-              <div class="profile-card-title">LGA</div>
-              <div class="profile-card-value" id="profile-lga">-</div>
+            <div class="notification">
+                <i class="fa-regular fa-bell"></i>
+                <span class="dot"></span>
             </div>
-            <div class="profile-card">
-              <div class="profile-card-title">Hometown</div>
-              <div class="profile-card-value" id="profile-hometown">-</div>
+        </header>
+
+        <!-- Search Bar -->
+        <section class="search-section">
+            <div class="search-input">
+                <i class="fa-solid fa-magnifying-glass"></i>
+                <input type="text" placeholder="Search for a service or skill..." id="search-input">
             </div>
-            <div class="profile-card">
-              <div class="profile-card-title">Current Address</div>
-              <div class="profile-card-value" id="profile-current">-</div>
-            </div>
-            <div class="profile-card">
-              <div class="profile-card-title">Permanent Address</div>
-              <div class="profile-card-value" id="profile-perm">-</div>
-            </div>
-          </div>
+            <button class="filter-btn"><i class="fa-solid fa-sliders"></i></button>
+        </section>
+
+        <!-- Popular Categories (Skillful) -->
+        <section class="section-header">
+            <h3>Skillfull</h3>
+            <a href="#" onclick="filterBySkill('all'); return false;">See All</a>
+        </section>
+        <div class="categories-grid">
+            <div class="cat-item" onclick="filterBySkill('Plumber')"><div class="icon-box blue"><i class="fa-solid fa-faucet"></i></div><span>Plumber</span></div>
+            <div class="cat-item" onclick="filterBySkill('Electrician')"><div class="icon-box orange"><i class="fa-solid fa-bolt"></i></div><span>Electrician</span></div>
+            <div class="cat-item" onclick="filterBySkill('Carpenter')"><div class="icon-box gray"><i class="fa-solid fa-hammer"></i></div><span>Carpenter</span></div>
+            <div class="cat-item" onclick="filterBySkill('Painter')"><div class="icon-box red"><i class="fa-solid fa-paint-roller"></i></div><span>Painter</span></div>
+            <div class="cat-item" onclick="toggleMoreSkills()"><div class="icon-box dark"><i class="fa-solid fa-grip"></i></div><span>More</span></div>
         </div>
 
-        <!-- Career Information Section -->
-        <div class="profile-section">
-          <div class="profile-section-title">💼 Career Information</div>
-          <div class="profile-grid">
-            <div class="profile-card">
-              <div class="profile-card-title">Professional Field</div>
-              <div class="profile-card-value" id="profile-field-card">-</div>
+        <!-- More Skills Modal (Hidden by default) -->
+        <div id="more-skills-modal" style="display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.5); z-index: 1000; align-items: center; justify-content: center;">
+            <div style="background: white; padding: 20px; border-radius: 10px; width: 90%; max-width: 400px; max-height: 80vh; overflow-y: auto;">
+                <h3>All Skills</h3>
+                <button onclick="toggleMoreSkills()" style="float: right; background: none; border: none; font-size: 1.5em; cursor: pointer;">✕</button>
+                <div id="all-skills-list" style="margin-top: 20px; display: grid; grid-template-columns: 1fr 1fr; gap: 10px; clear: both;">
+                    <!-- Skills will be populated here -->
+                </div>
             </div>
-            <div class="profile-card">
-              <div class="profile-card-title">Area of Interest</div>
-              <div class="profile-card-value" id="profile-interest">-</div>
-            </div>
-          </div>
         </div>
 
-        <!-- Verification Section -->
-        <div class="profile-section">
-          <div class="profile-section-title">🆔 Verification Details</div>
-          <div class="profile-grid">
-            <div class="profile-card">
-              <div class="profile-card-title">ID Type</div>
-              <div class="profile-card-value" id="profile-id-type">-</div>
-            </div>
-            <div class="profile-card">
-              <div class="profile-card-title">ID Number</div>
-              <div class="profile-card-value" id="profile-id-number">-</div>
-            </div>
-          </div>
+        <!-- Top Rated Professionals -->
+        <section class="section-header">
+            <h3>Professionals</h3>
+            <a href="#" onclick="filterBySkill('all'); return false;">See All</a>
+        </section>
+
+        <div class="pro-list" id="professionals-list">
+            <!-- Professionals will be loaded here dynamically -->
         </div>
 
-        <!-- Referee Section -->
-        <div class="profile-section">
-          <div class="profile-section-title">👥 Professional Reference</div>
-          <div class="profile-grid">
-            <div class="profile-card">
-              <div class="profile-card-title">Referee Name</div>
-              <div class="profile-card-value" id="profile-referee-name">-</div>
-            </div>
-            <div class="profile-card">
-              <div class="profile-card-title">Referee Phone</div>
-              <div class="profile-card-value" id="profile-referee-phone">-</div>
-            </div>
-            <div class="profile-card">
-              <div class="profile-card-title">Relationship</div>
-              <div class="profile-card-value" id="profile-referee-relationship">-</div>
-            </div>
-          </div>
-        </div>
-
-        <!-- Resume Upload Section -->
-        <div class="profile-section">
-          <div class="profile-section-title">📄 Resume</div>
-          <div class="resume-file-info hidden" id="resume-file-info">
-            <div class="file-icon">📄</div>
-            <div class="file-details">
-              <div class="file-name" id="resume-file-name">resume.pdf</div>
-              <div class="file-size" id="resume-file-size">0 KB</div>
-            </div>
-            <button class="remove-file-btn" onclick="removeResume()">Remove</button>
-          </div>
-          <div class="resume-upload-area" onclick="document.getElementById('resume-input').click()">
-            <div class="upload-icon">📤</div>
-            <div class="upload-text">Upload Your Resume</div>
-            <div class="upload-subtext">Click to select or drag and drop (PDF, DOC, DOCX)</div>
-            <input type="file" id="resume-input" accept=".pdf,.doc,.docx" onchange="handleResumeUpload(event)">
-          </div>
-        </div>
-
-        <!-- Action Buttons -->
-        <div class="action-buttons">
-          <button class="btn-logout" onclick="logout()">🚪 Logout</button>
-        </div>
-      </div>
+        <!-- Bottom Navigation -->
+        <nav class="bottom-nav">
+            <div class="nav-item active"><i class="fa-solid fa-house"></i><a href="dashboard.html"><span>Home</span></a></div>
+            <div class="nav-item"><i class="fa-solid fa-briefcase"></i><a href="jobs.html"><span>Jobs</span></a></div>
+            <div class="nav-add"><i class="fa-solid fa-plus"></i></div>
+            <div class="nav-item"><i class="fa-solid fa-comment-dots"></i><span>Messages</span></div>
+            <div class="nav-item"><i class="fa-solid fa-user"></i><span>Profile</span></div>
+        </nav>
     </div>
-  </div>
 
-  <!-- POST CREATION MODAL -->
-  <div class="modal-overlay" id="post-modal-overlay" onclick="closePostModal(event)">
-    <div class="modal-content" onclick="event.stopPropagation()">
-      <div class="modal-header">
-        <h3>Create a Post</h3>
-        <button class="modal-close" onclick="closePostModal()">✕</button>
-      </div>
-      <div class="modal-body">
-        <div class="post-creator-wrapper">
-          <div class="post-creator-avatar" id="modal-avatar">U</div>
-          <div class="post-creator-input-area">
-            <textarea class="post-creator-input" id="post-content" placeholder="Share your thoughts, updates, or opportunities with the community..."></textarea>
-          </div>
-        </div>
-      </div>
-      <div class="modal-footer">
-        <button class="btn-cancel" onclick="closePostModal()">Cancel</button>
-        <button class="btn-post" onclick="createPost()">Post</button>
-      </div>
-    </div>
-  </div>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script>
+let allProfessionals = [];
+let filteredProfessionals = [];
+let currentFilter = 'all';
 
-  <!-- Bottom Navigation Bar -->
-  <nav class="bottom-nav">
-    <button class="nav-btn active" data-tab="posts" aria-label="Posts">
-      <svg viewBox="0 0 24 24"><path d="M3 3h18v2H3zm0 4h18v10H3zm0 12h18v2H3z"/></svg>
-      Posts
-    </button>
-    <button class="nav-btn" data-tab="jobs" aria-label="Jobs">
-      <svg viewBox="0 0 24 24"><path d="M4 7V6a4 4 0 0 1 4-4h8a4 4 0 0 1 4 4v1"/><rect x="3" y="7" width="18" height="14" rx="2"/><path d="M16 21v-4a4 4 0 0 0-8 0v4"/></svg>
-      Jobs
-    </button>
-    <button class="nav-btn" id="post-create-btn" aria-label="Create Post">
-      <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 8v8M8 12h8"/></svg>
-      Post
-    </button>
-    <button class="nav-btn" data-tab="provider" aria-label="Provider">
-      <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 3c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3zm0 14.2c-2.5 0-4.71-1.28-6-3.22.03-1.99 4-3.08 6-3.08 1.99 0 5.97 1.09 6 3.08-1.29 1.94-3.5 3.22-6 3.22z"/></svg>
-      Network
-    </button>
-    <button class="nav-btn" data-tab="profile" aria-label="Profile">
-      <svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M21,21C21,16.58,16.42,13,12,13s-9,3.58-9,8"/></svg>
-      Profile
-    </button>
-  </nav>
-
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <script>
+document.addEventListener("DOMContentLoaded", async function() {
     // --- Supabase config ---
-    const supabaseUrl = "https://prkvtxqhuvfbekapeltm.supabase.co";
+    const supabaseUrl = "https://prkvtxqhuvfbekapeltm.supabase.co";    
     const supabaseKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBya3Z0eHFodXZmYmVrYXBlbHRtIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzcyMDYzMzQsImV4cCI6MjA5Mjc4MjMzNH0.C5e7kPILz52eIQCuwwcg6cNLhA-hqyqRVmit5HR-0J0";
-    const supabaseClient = window.supabase.createClient(supabaseUrl, supabaseKey);
-    
-    let userProfile = {};
-    let allSkills = new Set();
+    const supabaseClient = supabase.createClient(supabaseUrl, supabaseKey);
 
-    // Modal Functions
-    function openPostModal() {
-      document.getElementById('post-modal-overlay').classList.add('active');
-      document.body.style.overflow = 'hidden';
-    }
-
-    function closePostModal(e) {
-      if (e && e.target !== document.getElementById('post-modal-overlay')) return;
-      document.getElementById('post-modal-overlay').classList.remove('active');
-      document.getElementById('post-content').value = '';
-      document.body.style.overflow = 'auto';
-    }
-
-    // Post Creation Button
-    document.getElementById('post-create-btn').addEventListener('click', openPostModal);
-
-    // Auth check and profile fetch
-    async function fetchProfile() {
-      let { data: { user } } = await supabaseClient.auth.getUser();
-      if (!user) {
-        const localProf = JSON.parse(localStorage.getItem('ogonijobhub_profile') || '{}');
-        if (localProf && localProf.email) {
-          const { data: rows } = await supabaseClient.from('users').select('*').eq('email', localProf.email).limit(1);
-          if (rows && rows.length) userProfile = rows[0];
-          else userProfile = localProf;
-        } else {
-          window.location='login.html';
-        }
-      } else {
-        let { data: udata } = await supabaseClient.from('users').select('*').eq('user_id', user.id).single();
-        if (!udata) {
-          ({ data: udata } = await supabaseClient.from('users').select('*').eq('email', user.email).single());
-        }
-        userProfile = udata || {};
-        localStorage.setItem('ogonijobhub_profile', JSON.stringify(userProfile));
-      }
-      fillProfile(userProfile);
-      initializeAvatars();
-      loadProviderSkills();
-    }
-
-    function getInitials(name) {
-      return (name || 'U')
-        .split(' ')
-        .map(n => n[0])
-        .join('')
-        .toUpperCase()
-        .slice(0, 2);
-    }
-
-    function initializeAvatars() {
-      const initials = getInitials(userProfile.full_name);
-      document.getElementById('user-avatar-mini').textContent = initials;
-      document.getElementById('modal-avatar').textContent = initials;
-      document.getElementById('profile-avatar').textContent = initials;
-    }
-
-    function fillProfile(profile){
-      const initials = getInitials(profile.full_name);
-      document.getElementById('profile-name').textContent = profile.full_name || '-';
-      document.getElementById('profile-email').textContent = profile.email || '-';
-      document.getElementById('profile-email-card').textContent = profile.email || '-';
-      document.getElementById('profile-dob').textContent = profile.dob || '-';
-      document.getElementById('profile-gender').textContent = profile.gender || '-';
-      document.getElementById('profile-marital').textContent = profile.marital || '-';
-      document.getElementById('profile-state').textContent = profile.state || '-';
-      document.getElementById('profile-lga').textContent = profile.lga || '-';
-      document.getElementById('profile-hometown').textContent = profile.hometown || '-';
-      document.getElementById('profile-current').textContent = profile.current_addr || '-';
-      document.getElementById('profile-perm').textContent = profile.perm_addr || '-';
-      document.getElementById('profile-phone').textContent = profile.phone || '-';
-      document.getElementById('profile-field').textContent = profile.field || '-';
-      document.getElementById('profile-field-card').textContent = profile.field || '-';
-      document.getElementById('profile-exp').textContent = profile.experience || '-';
-      document.getElementById('profile-interest').textContent = profile.interest || '-';
-      document.getElementById('profile-id-type').textContent = profile.id_type || '-';
-      document.getElementById('profile-id-number').textContent = profile.id_number || '-';
-      document.getElementById('profile-referee-name').textContent = profile.referee_name || '-';
-      document.getElementById('profile-referee-phone').textContent = profile.referee_phone || '-';
-      document.getElementById('profile-referee-relationship').textContent = profile.referee_relationship || '-';
-    }
-
-    // Load all unique provider skills for filter dropdown
-    async function loadProviderSkills() {
-      try {
-        const { data: users } = await supabaseClient.from('users').select('field');
-        
-        if (users) {
-          users.forEach(user => {
-            if (user.field) {
-              allSkills.add(user.field);
+    // Load logged-in user's profile
+    function loadUserProfile() {
+        const profile = localStorage.getItem('ogonijobhub_profile');
+        if (profile) {
+            try {
+                const userData = JSON.parse(profile);
+                
+                // Safely get full_name and extract first name
+                const fullName = userData.full_name && userData.full_name.trim() !== '' ? userData.full_name : 'User';
+                const firstName = fullName.split(' ')[0];
+                
+                // Safely get location
+                const lga = userData.lga && userData.lga.trim() !== '' ? userData.lga : 'Location';
+                const state = userData.state && userData.state.trim() !== '' ? userData.state : 'Nigeria';
+                
+                document.getElementById('user-name').textContent = firstName;
+                document.getElementById('user-location').textContent = lga + ', ' + state;
+            } catch (e) {
+                console.error('Error parsing profile:', e);
+                document.getElementById('user-name').textContent = 'User';
+                document.getElementById('user-location').textContent = 'Port Harcourt, Nigeria';
             }
-          });
+        } else {
+            // No profile found, redirect to login
+            window.location.href = 'login.html';
+        }
+    }
+
+    // Generate random rating between 4.5 and 5.0
+    function generateRandomRating() {
+        return (Math.random() * 0.5 + 4.5).toFixed(1);
+    }
+
+    // Generate random review count
+    function generateRandomReviews() {
+        return Math.floor(Math.random() * 200) + 50;
+    }
+
+    // Fetch professionals from database
+    async function fetchProfessionals() {
+        try {
+            const { data: professionals, error } = await supabaseClient
+                .from('users')
+                .select('id, user_id, full_name, email, field, lga, state, experience')
+                .order('created_at', { ascending: false });
+
+            if (error) {
+                console.error('Supabase error:', error);
+                throw error;
+            }
+
+            if (professionals && professionals.length > 0) {
+                allProfessionals = professionals.map(pro => ({
+                    ...pro,
+                    rating: generateRandomRating(),
+                    reviews: generateRandomReviews()
+                }));
+                filteredProfessionals = allProfessionals;
+                displayProfessionals(filteredProfessionals);
+                populateSkillsList();
+            } else {
+                console.log('No professionals found, showing demo data');
+                showDemoData();
+            }
+        } catch (err) {
+            console.error('Error loading professionals:', err);
+            showDemoData();
+        }
+    }
+
+    // Display professionals
+    function displayProfessionals(professionals) {
+        const professionalsList = document.getElementById('professionals-list');
+        professionalsList.innerHTML = '';
+
+        if (professionals.length === 0) {
+            professionalsList.innerHTML = '<p style="grid-column: 1/-1; text-align: center; color: #999; padding: 30px;">No professionals found in this category.</p>';
+            return;
         }
 
-        populateSkillFilter();
-      } catch (err) {
-        console.error('Error loading provider skills:', err);
-      }
+        professionals.forEach((pro) => {
+            const avatarUrl = `https://i.pravatar.cc/150?u=${pro.email || pro.user_id || pro.id}`;
+            const field = pro.field || 'Skilled Professional';
+            const location = (pro.lga || 'Location') + ', ' + (pro.state || 'Nigeria');
+            
+            const proCard = document.createElement('div');
+            proCard.className = 'pro-card';
+            proCard.innerHTML = `
+                <img src="${avatarUrl}" alt="Pro" class="pro-img">
+                <div class="pro-details">
+                    <div class="pro-name">${pro.full_name || 'Professional'} <i class="fa-solid fa-circle-check badge"></i></div>
+                    <p class="pro-title">${field}</p>
+                    <div class="pro-rating"><i class="fa-solid fa-star" style="color: #FFB800;"></i> ${pro.rating} <span>(${pro.reviews} reviews)</span></div>
+                    <p class="pro-loc"><i class="fa-solid fa-location-dot"></i> ${location}</p>
+                </div>
+                <div class="pro-actions">
+                    <i class="fa-regular fa-heart heart-icon" data-pro-id="${pro.user_id || pro.id}"></i>
+                    <button class="view-btn" onclick="viewProfile('${pro.user_id || pro.id}')">View Profile</button>
+                </div>
+            `;
+            professionalsList.appendChild(proCard);
+        });
     }
 
-    function populateSkillFilter() {
-      const dropdown = document.getElementById('skill-filter');
-      const sortedSkills = Array.from(allSkills).sort();
+    // Populate all skills list
+    function populateSkillsList() {
+        const skillsSet = new Set();
+        allProfessionals.forEach(pro => {
+            if (pro.field && pro.field.trim() !== '') {
+                skillsSet.add(pro.field);
+            }
+        });
 
-      sortedSkills.forEach(skill => {
-        const option = document.createElement('option');
-        option.value = skill;
-        option.textContent = skill;
-        dropdown.appendChild(option);
-      });
+        const skillsList = Array.from(skillsSet).sort();
+        const allSkillsList = document.getElementById('all-skills-list');
+        allSkillsList.innerHTML = '';
+
+        if (skillsList.length === 0) {
+            allSkillsList.innerHTML = '<p style="grid-column: 1/-1; color: #999;">No skills available yet</p>';
+            return;
+        }
+
+        skillsList.forEach(skill => {
+            const skillBtn = document.createElement('button');
+            skillBtn.textContent = skill;
+            skillBtn.onclick = () => { filterBySkill(skill); toggleMoreSkills(); };
+            skillBtn.style.cssText = `
+                padding: 10px;
+                border: 1px solid #ddd;
+                border-radius: 5px;
+                background: white;
+                cursor: pointer;
+                font-weight: 500;
+                transition: 0.3s;
+            `;
+            skillBtn.onmouseover = () => skillBtn.style.background = '#f0f0f0';
+            skillBtn.onmouseout = () => skillBtn.style.background = 'white';
+            allSkillsList.appendChild(skillBtn);
+        });
     }
 
-    // Filter providers by selected skill
-    window.filterProvidersBySkill = function() {
-      const skill = document.getElementById('skill-filter').value;
-      if (skill) {
-        fetchProviders(skill);
-      } else {
-        const gridEl = document.getElementById('provider-grid');
-        gridEl.innerHTML = '<div class="empty-state"><div class="empty-state-icon">🔍</div><p>Select a skill or search to view providers...</p></div>';
-      }
+    // Filter by skill
+    window.filterBySkill = function(skill) {
+        currentFilter = skill;
+        if (skill === 'all') {
+            filteredProfessionals = allProfessionals;
+        } else {
+            filteredProfessionals = allProfessionals.filter(pro => 
+                pro.field && pro.field.toLowerCase() === skill.toLowerCase()
+            );
+        }
+        displayProfessionals(filteredProfessionals);
     };
 
-    // Posts functionality
-    async function createPost() {
-      const content = document.getElementById('post-content').value.trim();
-      if (!content) {
-        alert('Please write something to post');
-        return;
-      }
+    // Toggle More Skills Modal
+    window.toggleMoreSkills = function() {
+        const modal = document.getElementById('more-skills-modal');
+        modal.style.display = modal.style.display === 'none' ? 'flex' : 'none';
+    };
 
-      try {
-        const { error } = await supabaseClient.from('posts').insert([{
-          user_id: userProfile.user_id,
-          author_name: userProfile.full_name,
-          content: content,
-          created_at: new Date().toISOString()
-        }]);
-
-        if (error) throw error;
-
-        closePostModal();
-        fetchPosts();
-      } catch (err) {
-        alert('Failed to create post: ' + err.message);
-      }
-    }
-
-    async function fetchPosts() {
-      try {
-        const { data: posts, error } = await supabaseClient
-          .from('posts')
-          .select('*')
-          .order('created_at', { ascending: false })
-          .limit(50);
-
-        if (error) throw error;
-
-        const feedEl = document.getElementById('posts-feed');
-        if (!posts || posts.length === 0) {
-          feedEl.innerHTML = '<div class="empty-state"><div class="empty-state-icon">📝</div><p>No posts yet. Be the first to share!</p></div>';
-          return;
+    // Close modal when clicking outside
+    document.getElementById('more-skills-modal').addEventListener('click', function(e) {
+        if (e.target === this) {
+            this.style.display = 'none';
         }
+    });
 
-        feedEl.innerHTML = posts.map(post => {
-          const date = new Date(post.created_at).toLocaleDateString();
-          const initials = getInitials(post.author_name);
-          return `
-            <div class="post-card">
-              <div class="post-header">
-                <div class="post-header-avatar">${initials}</div>
-                <div class="post-header-info">
-                  <p class="post-header-name">${post.author_name || 'Anonymous'}</p>
-                  <p class="post-header-time">${date}</p>
-                </div>
-              </div>
-              <div class="post-content">${post.content}</div>
-              <div class="post-stats">
-                <span>👍 ${post.likes || 0} Likes</span>
-                <span>💬 ${post.comments || 0} Comments</span>
-              </div>
-              <div class="post-actions-bar">
-                <button class="post-action-btn" onclick="likePost(${post.id})">👍 Like</button>
-                <button class="post-action-btn" onclick="commentPost(${post.id})">💬 Comment</button>
-              </div>
-            </div>
-          `;
-        }).join('');
-      } catch (err) {
-        console.error('Error fetching posts:', err);
-      }
-    }
-
-    function likePost(postId) {
-      alert('Like feature coming soon!');
-    }
-
-    function commentPost(postId) {
-      alert('Comment feature coming soon!');
-    }
-
-    // Jobs Fetch
-    async function fetchJobs(query) {
-      let el = document.getElementById('jobs-list');
-      el.innerHTML = '<li><div class="empty-state"><div class="empty-state-icon">⏳</div><p>Loading jobs...</p></div></li>';
-      
-      try {
-        let { data: jobs, error } = query
-          ? await supabaseClient.from('jobs').select('*').ilike('title', `%${query}%`)
-          : await supabaseClient.from('jobs').select('*');
-        
-        if (error) {
-          el.innerHTML = '<li><div class="empty-state"><div class="empty-state-icon">⚠️</div><p>Database error. Please try again.</p></div></li>';
-          return;
-        }
-
-        if (!jobs || !jobs.length) {
-          el.innerHTML = '<li><div class="empty-state"><div class="empty-state-icon">📭</div><p>No jobs found. Try a different search!</p></div></li>';
-          return;
-        }
-        
-        el.innerHTML = jobs.map(job => `
-          <li>
-            <div class="job-list-title">${job.title || 'Job Title'}</div>
-            <div class="job-list-desc">${job.description || 'No description available'}</div>
-            <div class="job-list-meta">
-              ${job.location ? `<span class="job-list-loc">📍 ${job.location}</span>` : ''}
-              ${job.job_type ? `<span class="job-list-type">💼 ${job.job_type}</span>` : ''}
-            </div>
-          </li>
-        `).join('');
-      } catch (err) {
-        el.innerHTML = '<li><div class="empty-state"><div class="empty-state-icon">📡</div><p>Network error. Check your connection.</p></div></li>';
-      }
-    }
-
-    // Provider Search
-    async function fetchProviders(skill) {
-      const gridEl = document.getElementById('provider-grid');
-      if (!skill) {
-        gridEl.innerHTML = '<div class="empty-state"><div class="empty-state-icon">🔍</div><p>Search for service providers by their skill...</p></div>';
-        return;
-      }
-
-      gridEl.innerHTML = '<div class="empty-state"><div class="empty-state-icon">⏳</div><p>Loading...</p></div>';
-
-      try {
-        let { data: providers, error } = await supabaseClient
-          .from('users')
-          .select('*')
-          .ilike('field', `%${skill}%`);
-
-        if (error) throw error;
-
-        if (!providers || providers.length === 0) {
-          gridEl.innerHTML = '<div class="empty-state"><div class="empty-state-icon">❌</div><p>No providers found with that skill.</p></div>';
-          return;
-        }
-
-        gridEl.innerHTML = providers.map(provider => {
-          const initials = getInitials(provider.full_name);
-          const rating = provider.rating || 0;
-          const stars = '⭐'.repeat(Math.floor(rating));
-          return `
-            <div class="provider-card">
-              <div class="provider-avatar">${initials}</div>
-              <div class="provider-info">
-                <p class="provider-name">${provider.full_name || 'Service Provider'}</p>
-                <p class="provider-skill">${provider.field || 'Professional'}</p>
-                <p class="provider-rating">${stars} ${rating > 0 ? rating.toFixed(1) : 'New'}</p>
-                <div class="provider-contact">
-                  <div class="provider-contact-item">
-                    <span>📍</span>
-                    <span>${provider.state || provider.lga || 'Location not set'}</span>
-                  </div>
-                  <div class="provider-contact-item">
-                    <span>📞</span>
-                    <a href="tel:${provider.phone}" class="provider-phone">${provider.phone || 'Not provided'}</a>
-                  </div>
-                  <div class="provider-contact-item">
-                    <span>✨</span>
-                    <span>${provider.experience || 0} years exp</span>
-                  </div>
-                </div>
-              </div>
-            </div>
-          `;
-        }).join('');
-      } catch (err) {
-        gridEl.innerHTML = '<div class="empty-state"><div class="empty-state-icon">⚠️</div><p>Error loading providers.</p></div>';
-      }
-    }
-
-    // Resume Upload Handler
-    function handleResumeUpload(event) {
-      const file = event.target.files[0];
-      if (!file) return;
-
-      const maxSize = 5 * 1024 * 1024;
-      if (file.size > maxSize) {
-        alert('File size must be less than 5MB');
-        return;
-      }
-
-      const fileInfo = document.getElementById('resume-file-info');
-      document.getElementById('resume-file-name').textContent = file.name;
-      document.getElementById('resume-file-size').textContent = (file.size / 1024).toFixed(2) + ' KB';
-      fileInfo.classList.remove('hidden');
-    }
-
-    function removeResume() {
-      document.getElementById('resume-input').value = '';
-      document.getElementById('resume-file-info').classList.add('hidden');
-    }
-
-    // Navbar
-    document.querySelectorAll('.nav-btn').forEach(btn => {
-      if (btn.id !== 'post-create-btn') {
-        btn.addEventListener('click', function () {
-          document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
-          btn.classList.add('active');
-          let tab = btn.getAttribute('data-tab');
-          document.querySelectorAll('.tab-view').forEach(t => t.classList.remove('active'));
-          document.getElementById('tab-' + tab).classList.add('active');
+    // Search functionality
+    document.getElementById('search-input').addEventListener('input', function(e) {
+        const searchTerm = e.target.value.toLowerCase();
+        filteredProfessionals = allProfessionals.filter(pro => {
+            const name = (pro.full_name || '').toLowerCase();
+            const skill = (pro.field || '').toLowerCase();
+            return name.includes(searchTerm) || skill.includes(searchTerm);
         });
-      }
+        displayProfessionals(filteredProfessionals);
     });
 
-    // Job search
-    document.getElementById('job-search-btn').onclick = () => {
-      let q = document.getElementById('job-search-input').value.trim();
-      fetchJobs(q);
-    }
-    document.getElementById('job-search-input').addEventListener('keyup', function(e){
-      if (e.key==="Enter") document.getElementById('job-search-btn').click();
+    // Heart icon toggle
+    document.addEventListener('click', function(e) {
+        if (e.target.classList.contains('heart-icon')) {
+            e.target.classList.toggle('fa-regular');
+            e.target.classList.toggle('fa-solid');
+            e.target.style.color = e.target.classList.contains('fa-solid') ? '#e74c3c' : '#000';
+        }
     });
 
-    // Provider search
-    document.getElementById('provider-search-btn').onclick = () => {
-      let q = document.getElementById('provider-search-input').value.trim();
-      fetchProviders(q);
-    }
-    document.getElementById('provider-search-input').addEventListener('keyup', function(e){
-      if (e.key==="Enter") document.getElementById('provider-search-btn').click();
-    });
+    // View profile
+    window.viewProfile = function(userId) {
+        console.log('Viewing profile for user:', userId);
+        // Redirect to profile page
+        // window.location.href = 'profile.html?id=' + userId;
+    };
 
-    // Logout
-    async function logout() {
-      await supabaseClient.auth.signOut();
-      localStorage.removeItem('ogonijobhub_profile');
-      window.location = 'login.html';
+    // Demo data (fallback)
+    function showDemoData() {
+        const demoCards = [
+            { 
+                id: '1',
+                user_id: '1', 
+                full_name: 'John Doe', 
+                field: 'Electrician', 
+                lga: 'Eleme', 
+                state: 'Rivers State', 
+                email: 'john@example.com',
+                experience: 5
+            },
+            { 
+                id: '2',
+                user_id: '2', 
+                full_name: 'Emeka Obinna', 
+                field: 'Plumber', 
+                lga: 'Gokana', 
+                state: 'Rivers State', 
+                email: 'emeka@example.com',
+                experience: 7
+            },
+            { 
+                id: '3',
+                user_id: '3', 
+                full_name: 'Chioma Adeyemi', 
+                field: 'Painter', 
+                lga: 'Khana', 
+                state: 'Rivers State', 
+                email: 'chioma@example.com',
+                experience: 3
+            },
+            { 
+                id: '4',
+                user_id: '4', 
+                full_name: 'David Okafor', 
+                field: 'Carpenter', 
+                lga: 'Tai', 
+                state: 'Rivers State', 
+                email: 'david@example.com',
+                experience: 8
+            },
+            { 
+                id: '5',
+                user_id: '5', 
+                full_name: 'Ade Bello', 
+                field: 'Welder', 
+                lga: 'Eleme', 
+                state: 'Rivers State', 
+                email: 'ade@example.com',
+                experience: 6
+            },
+            { 
+                id: '6',
+                user_id: '6', 
+                full_name: 'Grace Nwosu', 
+                field: 'Fashion Designer', 
+                lga: 'Gokana', 
+                state: 'Rivers State', 
+                email: 'grace@example.com',
+                experience: 4
+            },
+            { 
+                id: '7',
+                user_id: '7', 
+                full_name: 'Ibrahim Hassan', 
+                field: 'Solar Installer', 
+                lga: 'Khana', 
+                state: 'Rivers State', 
+                email: 'ibrahim@example.com',
+                experience: 9
+            },
+            { 
+                id: '8',
+                user_id: '8', 
+                full_name: 'Zainab Ahmed', 
+                field: 'Chef', 
+                lga: 'Tai', 
+                state: 'Rivers State', 
+                email: 'zainab@example.com',
+                experience: 5
+            },
+            { 
+                id: '9',
+                user_id: '9', 
+                full_name: 'Peter Ekpo', 
+                field: 'Mechanic', 
+                lga: 'Eleme', 
+                state: 'Rivers State', 
+                email: 'peter@example.com',
+                experience: 10
+            },
+            { 
+                id: '10',
+                user_id: '10', 
+                full_name: 'Favour Okafor', 
+                field: 'Nurse', 
+                lga: 'Gokana', 
+                state: 'Rivers State', 
+                email: 'favour@example.com',
+                experience: 4
+            }
+        ];
+
+        allProfessionals = demoCards.map(pro => ({
+            ...pro,
+            rating: generateRandomRating(),
+            reviews: generateRandomReviews()
+        }));
+        filteredProfessionals = allProfessionals;
+        displayProfessionals(filteredProfessionals);
+        populateSkillsList();
     }
 
-    // --- On page load
-    fetchProfile();
-    fetchJobs('');
-    fetchPosts();
-  </script>
+    // Initialize
+    loadUserProfile();
+    fetchProfessionals();
+});
+    </script>
 </body>
 </html>
